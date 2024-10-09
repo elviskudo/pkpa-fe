@@ -1,15 +1,15 @@
-import localFont from "next/font/local";
-import "./globals.css";
+import { Raleway, Open_Sans } from "next/font/google";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const raleway = Raleway({
+  subsets: ["latin"],
+  weight: ["400", "700"], // Pilih variasi berat font yang diinginkan
+  variable: "--font-raleway",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  weight: ["400", "600"], // Pilih variasi berat font yang diinginkan
+  variable: "--font-open-sans",
 });
 
 export const metadata = {
@@ -19,12 +19,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+    <html lang="en" className={`${raleway.variable} ${openSans.variable}`}>
+      <head></head>
+      <body>{children}</body>
     </html>
   );
 }
