@@ -29,6 +29,7 @@
     "react-select": "^5.8.1",
     "react-tooltip": "^5.28.0",
     "sweetalert2": "^11.14.1",
+    "swiper": "^11.1.14",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7"
   },
