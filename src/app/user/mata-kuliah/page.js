@@ -138,6 +138,40 @@ export default function Page() {
 
   return (
     <div>
+      <div className="max-w-screen mb-2">
+        <div className="px-3">
+          <nav className="flex flex-wrap gap-8">
+            <a
+              href="#"
+              className="inline-flex whitespace-nowrap border-b-2 border-transparent border-b-blue-600 py-2 px-3 text-sm font-semibold text-black transition-all duration-200 ease-in-out"
+            >
+              {" "}
+              Semua{" "}
+            </a>
+            <a
+              href="#"
+              className="inline-flex whitespace-nowrap border-b-2 border-transparent py-2 px-3 text-sm font-medium text-gray-600 transition-all duration-200 ease-in-out hover:border-b-blue-600 hover:text-black-600"
+            >
+              {" "}
+              Dalam Progress{" "}
+            </a>
+            <a
+              href="#"
+              className="inline-flex whitespace-nowrap border-b-2 border-transparent py-2 px-3 text-sm font-medium text-gray-600 transition-all duration-200 ease-in-out hover:border-b-blue-600 hover:text-black-600"
+            >
+              {" "}
+              Selesai{" "}
+            </a>
+            <a
+              href="#"
+              className="inline-flex whitespace-nowrap border-b-2 border-transparent py-2 px-3 text-sm font-medium text-gray-600 transition-all duration-200 ease-in-out hover:border-b-blue-600 hover:text-black-600"
+            >
+              {" "}
+              Lulus Exam{" "}
+            </a>
+          </nav>
+        </div>
+      </div>
       <div className="p-2 text-black">
         <Accordion title="Teori Dasar" items={firstItem} />
       </div>

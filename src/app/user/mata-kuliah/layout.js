@@ -1,6 +1,7 @@
 import { Raleway, Open_Sans } from "next/font/google";
 import Sidebar from "@/components/User/sidebar";
 import "/public/globals.css";
+import Navbar from "@/components/User/navbar";
 
 const raleway = Raleway({
   subsets: ["latin"],
@@ -23,9 +24,10 @@ export default function MataKuliah({ children }) {
   return (
     <html lang="en" className={`${raleway.variable} ${openSans.variable}`}>
       <body className="bg-gray-100">
-        <div className="flex min-h-screen">
+        <Navbar />
+        <div className="flex min-h-screen mt-8 mx-16">
           <Sidebar />
-          <main className="flex-1 p-8">{children}</main>
+          <main className="flex-1 px-8">{children}</main>
         </div>
       </body>
     </html>
