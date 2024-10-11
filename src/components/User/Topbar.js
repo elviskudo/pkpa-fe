@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-export default function Navbar() {
+export default function Topbar() {
   return (
     <nav className="sticky top-0 flex justify-between items-center px-16 py-4 bg-white z-50 shadow-md">
       <div className="flex items-center space-x-4">
