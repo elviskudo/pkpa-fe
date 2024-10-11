@@ -15,7 +15,7 @@ export default function Sidebar() {
     { name: "Pengaturan" },
   ];
   return (
-    <div className="w-64 h-min bg-white shadow-sm">
+    <div className="w-64 h-min bg-white shadow-sm rounded-md">
       <div className="p-4 border-b">
         <div className="flex items-center space-x-4">
           <div className="w-12 h-12 rounded-full bg-gray-800"></div>
