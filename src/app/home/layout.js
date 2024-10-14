@@ -20,8 +20,13 @@ export const metadata = {
 
 export default function LandingPage({ children }) {
   return (
-    <>
-      {children}
-    </>
+    <html lang="en" className={`${raleway.variable} ${openSans.variable}`}>
+      <head></head>
+      <body>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet"/>
+        {children}</body>
+    </html>
   );
 }
