@@ -3,7 +3,7 @@
 
 const universities = [
   { name: "Indonesia", logo: "/images/univ/ui-logo.png" },
-  { name: "Pasundan", logo: "/images/univ/ub-logo.png" },
+  { name: "Pasundan", logo: "/images/univ/unpas-logo.png" },
   { name: "Trisakti", logo: "/images/univ/trisakti-logo.png" },
   { name: "Padjadjaran", logo: "/images/univ/unpad-logo.png" },
   { name: "Muhammadiyah Yogyakarta", logo: "/images/univ/umy-logo.png" },
