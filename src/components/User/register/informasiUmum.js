@@ -24,6 +24,7 @@ function InformasiUmum() {
         .email('Email harus valid')
         .required('Email harus diisi'),
       nomorTelepon: Yup.number().required('Nomor telepon harus diisi'),
+      nomorWhatsapp: Yup.number().required('Nomor whatsapp harus diisi'),
       kataSandi: Yup.string().required('Kata sandi harus diisi'),
       konfirmasiKataSandi: Yup.string()
         .oneOf([Yup.ref('kataSandi'), null], 'Kata sandi tidak sama')
