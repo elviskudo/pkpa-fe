@@ -6,7 +6,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import DropzoneWithoutDrag from './DropzoneWithoutDrag';
 import RegisterButtonBack from './RegisterButtonBack';
-import RegisterButtonNext from './RegisterButtonNext';
+import RegisterButtonSave from './RegisterButtonSave';
 
 const validationSchema = Yup.object({
   cv: Yup.mixed().required('Curriculum Vitae is required'),
@@ -57,19 +57,19 @@ export default function UnggahDokumen() {
         errors={formik.errors}
         className="border-b-2" />
         
-        <div className='grid grid-cols-subgrid gap-y-1 col-span-2 border-b-2 py-8'>
+        <div className='grid gap-y-1 gap-x-2 col-span-2 border-b-2 py-8'>
           <div className="col-span-2">
             <DropzoneWithoutDrag title="Foto Pendaftar" 
             setFieldValue={formik.setFieldValue} 
             fieldName="photo" 
             errors={formik.errors} />
           </div>
-          <div className="mx-2 mt-4 px-1 py-1 text-sm col-start-2 text-gray-600 border inline-block rounded bg-orange-200">
+          <div className="ml-20 -mr-10 mt-4 pl-10 py-1 text-sm col-start-2 text-gray-600 border inline-block rounded bg-orange-200 w-96">
             <div className='flex '>
               <InformationCircleIcon className="h-5 w-5 text-orange-400" />
               <strong className="ml-2">Mohon Perhatian:</strong>
             </div>
-            <ul className="list-disc list-inside pl-8 text-sm text-gray-600 mb-4">
+            <ul className="list-disc list-inside text-sm text-gray-600" >
               <li>Pas Foto ukuran 4 x 6 cm</li>
               <li>Pas Foto harus berwarna dengan latar belakang polos</li>
               <li>Ukuran minimal file pas foto adalah 80 KB</li>
@@ -85,7 +85,7 @@ export default function UnggahDokumen() {
     </form>
     <div className="flex justify-between mt-8">
           <RegisterButtonBack prevPage="informasi-universitas" />
-          <RegisterButtonNext handleSubmit={formik.handleSubmit} nextPage="informasi-umum" formik={formik}/>
+          <RegisterButtonSave handleSubmit={formik.handleSubmit}/>
         </div>
     </div>
   );
