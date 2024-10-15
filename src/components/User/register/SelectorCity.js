@@ -14,7 +14,7 @@ const loadOptions = (inputValue, callback, data) => {
   }, 1000); 
 };
 
-export default function Selector({ data, selected, setSelected, formik, name }) {
+export default function Selector({ data, selected, setSelected, placeholder, formik, name }) {
   return (
     <div className="max-w-lg">
       <AsyncSelect
@@ -28,7 +28,7 @@ export default function Selector({ data, selected, setSelected, formik, name }) 
           setSelected(value);
           formik.setFieldValue(name, value ? value.name: ''); 
         }}
-        placeholder="Pilih Provinsi"
+        placeholder={placeholder}
         classNamePrefix="react-select" 
         noOptionsMessage={() => 'Tidak ada hasil yang ditemukan'}
         isClearable

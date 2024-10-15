@@ -60,11 +60,11 @@ useEffect(() => {
 },[state])
 
 useEffect(() => {
-  stateData && setState(stateData[0])
+  stateData && setState(stateData)
 }, [stateData])
 
 useEffect(() => {
-  cityData && setCity(cityData[0])
+  cityData && setCity(cityData)
 }, [cityData])
 
 useEffect(() => {
@@ -179,6 +179,7 @@ useEffect(() => {
               setSelected={setCountry} 
               formik={formik} 
               name="provinsi"
+              placeholder='Pilih Provinsi'
             />
           </div>
           {formik.touched.provinsi && formik.errors.provinsi ? (
@@ -198,7 +199,7 @@ useEffect(() => {
                 setSelected={setState} 
                 formik={formik} 
                 name="kabKota"
-                
+                placeholder='Pilih Kab/Kota'
               />
             </div>
         )}
@@ -220,7 +221,7 @@ useEffect(() => {
                 setSelected={setCity} 
                 formik={formik} 
                 name="desaKelurahan"
-                
+                placeholder='Pilih Desa/Kelurahan'
               />
             </div>
             )}
