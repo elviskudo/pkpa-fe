@@ -64,7 +64,7 @@ export default function UnggahDokumen() {
             fieldName="photo" 
             errors={formik.errors} />
           </div>
-          <div className="ml-20 -mr-10 mt-4 pl-10 py-1 text-sm col-start-2 text-gray-600 border inline-block rounded bg-orange-200 w-96">
+          <div className="mr-20 -ml-10 mt-4 pl-10 py-1 text-sm col-start-2 text-gray-600 border inline-block rounded bg-orange-200 w-96">
             <div className='flex '>
               <InformationCircleIcon className="h-5 w-5 text-orange-400" />
               <strong className="ml-2">Mohon Perhatian:</strong>
@@ -84,7 +84,7 @@ export default function UnggahDokumen() {
         errors={formik.errors} />
     </form>
     <div className="flex justify-between mt-8">
-          <RegisterButtonBack prevPage="informasi-universitas" />
+          <RegisterButtonBack prevPage="UniversityInformation" />
           <RegisterButtonSave handleSubmit={formik.handleSubmit}/>
         </div>
     </div>

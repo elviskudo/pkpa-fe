@@ -34,7 +34,7 @@ const DropzoneWithoutDrag = ({ title, setFieldValue, fieldName, errors }) => {
   return (
     <section className="container">
       <div className={`py-8 ${title !== 'Foto Pendaftar' ? 'border-b-2' : ''}`}>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5 pr-40'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5 pr-20'>
           <div>
             <label>{title}</label>
             <aside className="mt-2">
@@ -60,7 +60,7 @@ const DropzoneWithoutDrag = ({ title, setFieldValue, fieldName, errors }) => {
           ) : (
             // Dropzone akan muncul jika tidak ada file yang diupload
             <div
-              {...getRootProps({ className: 'border-2 border-dashed p-6 text-center cursor-pointer flex flex-col justify-center items-center' })}>
+              {...getRootProps({ className: 'border-2 border-dashed p-6 text-center cursor-pointer flex flex-col justify-center items-center w-96' })}>
               <input {...getInputProps()} />
               <ArrowUpTrayIcon className='size-8' />
               <p className="text-sm">Klik untuk upload</p>
