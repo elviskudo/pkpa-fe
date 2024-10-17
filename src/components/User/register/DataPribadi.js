@@ -313,8 +313,8 @@ useEffect(() => {
       </form>
 
         <div className="flex border-t-2 justify-between py-8 mt-8">
-          <RegisterButtonBack prevPage="informasi-umum" />
-          <RegisterButtonNext handleSubmit={formik.handleSubmit} nextPage="informasi-universitas" formik={formik}/>
+          <RegisterButtonBack prevPage="GeneralInformation" />
+          <RegisterButtonNext handleSubmit={formik.handleSubmit} nextPage="UniversityInformation" formik={formik}/>
         </div>
     </div>
   );

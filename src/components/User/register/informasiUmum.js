@@ -38,7 +38,7 @@ function InformasiUmum() {
   
 
   return (
-    <div className=" mx-4 md:mx-20 lg:mx-40 xl:mx-60 my-10 py-10 px-5 md:px-10 lg:px-20 bg-white shadow-md rounded-lg">
+    <div className="mx-4 md:mx-20 lg:mx-40 xl:mx-60 my-10 py-10 px-5 md:px-10 lg:px-20 bg-white shadow-md rouded-lg">
       {/* Breadcrumb */}
 
       <div className="text-sm font-medium text-gray-500 mb-5">
@@ -191,7 +191,7 @@ function InformasiUmum() {
         </div>
       </form>
       <div className='border-t-2 mt-8 py-8 flex justify-end'>
-        <RegisterButtonNext handleSubmit={formik.handleSubmit} nextPage="data-pribadi" formik={formik}/>
+        <RegisterButtonNext handleSubmit={formik.handleSubmit} nextPage="PersonalData" formik={formik}/>
       </div>
     </div>
   );

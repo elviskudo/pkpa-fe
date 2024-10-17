@@ -97,8 +97,8 @@ export default function InformasiUniversitas(){
 
             </form>
             <div className="border-t-2 py-8 flex justify-between mt-8">
-                <RegisterButtonBack prevPage="data-pribadi" />
-                <RegisterButtonNext handleSubmit={formik.handleSubmit} nextPage="unggah-dokumen" formik={formik}/>
+                <RegisterButtonBack prevPage="PersonalData" />
+                <RegisterButtonNext handleSubmit={formik.handleSubmit} nextPage="DocumentUpload" formik={formik}/>
             </div>
         </div>
     )
