@@ -1,3 +1,4 @@
+"use client";
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -5,7 +6,7 @@ const NavbarLogin = () => {
     return (
         <nav className="sticky top-0 flex justify-between items-center px-8 py-4 bg-white z-50 shadow-md">
             <div className="flex items-center space-x-4">
-                <Link href="/home" className="flex items-center">
+                <Link href="/" className="flex items-center">
                     <Image
                         src="/images/logo.png"
                         alt="PKPA Logo"
@@ -26,17 +27,17 @@ const NavbarLogin = () => {
 
             <ul className="flex space-x-4 ml-auto mr-12">
                 <li>
-                    <Link href="/home" className="text-gray-600 hover:text-gray-900">
+                    <Link href="#lecturer" className="text-gray-600 hover:text-gray-900">
                         Kurikulum
                     </Link>
                 </li>
                 <li>
-                    <Link href="/home" className="text-gray-600 hover:text-gray-900">
+                    <Link href="#visionMission" className="text-gray-600 hover:text-gray-900">
                         Visi & Misi
                     </Link>
                 </li>
                 <li>
-                    <Link href="/home" className="text-gray-600 hover:text-gray-900">
+                    <Link href="#testimony" className="text-gray-600 hover:text-gray-900">
                         Testimoni
                     </Link>
                 </li>

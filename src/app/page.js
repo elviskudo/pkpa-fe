@@ -6,22 +6,28 @@ import CarouselKeunggulan from "@/components/LandingPage/CarouselKeunggulan";
 import AlurPendaftaran from "@/components/LandingPage/AlurDaftar";
 import Kurikulum from "@/components/LandingPage/Kurikulum";
 import Brosur from "@/components/LandingPage/Brosur";
-import Testimoni from "@/components/LandingPage/Testimoni";
+import Testimony from "@/components/LandingPage/Testimony";
 import Footer from "@/components/LandingPage/footer";
 
 export default function Home() {
   return (
-    <div className="container">
+    <>
+      {/* Render NavbarLanding */}
       <NavbarLanding />
-      <div id="carousel"><Carousel /></div>
-      <div id="university"><UniversityList /></div>
-      <div id="about"><AboutUs /></div>
-      <div id="keunggulan"><CarouselKeunggulan /></div>
-      <div id="alur-daftar"><AlurPendaftaran /></div>
-      <div id="kurikulum"><Kurikulum /></div>
-      <div id="brosur"><Brosur /></div>
-      <div id="testimoni"><Testimoni /></div>
-      <Footer />
-    </div>
+
+      {/* Wrap the rest of the content in the container */}
+      <div className="container">
+        <div id="carousel" className="scroll-mt-24"><Carousel /></div>
+        <div id="university" className="scroll-mt-24"><UniversityList /></div>
+        <div id="about" className="scroll-mt-24"><AboutUs /></div>
+        <div id="keunggulan" className="scroll-mt-24"><CarouselKeunggulan /></div>
+        <div id="alur-daftar" className="scroll-mt-24"><AlurPendaftaran /></div>
+        <div id="kurikulum" className="scroll-mt-24"><Kurikulum /></div>
+        <div id="brosur" className="scroll-mt-24"><Brosur /></div>
+        <div id="testimoni" className="scroll-mt-24"><Testimony /></div>
+
+        <Footer />
+      </div>
+    </>
   );
 }
