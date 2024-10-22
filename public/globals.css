@@ -17,7 +17,7 @@
 }
 
 body {
-  color: var(--foreground);
+  color: black;
   background: var(--background);
   font-family: var(--font-raleway);
 }
@@ -30,3 +30,5 @@ body {
     scroll-behavior: smooth;
   }
 }
+
+
