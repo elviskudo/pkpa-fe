@@ -4,18 +4,13 @@ import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { Tabs, TabsContent, TabsTrigger } from "@/components/User/detail/Tabs";
 import Link from "next/link";
+import NewForum from "./NewForum";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const [activeTab, setActiveTab] = useState("content");
+  const [activeTab, setactivetab] = useState("content");
   const [activeTopic, setActiveTopic] = useState("");
-
-  const [inputText, setInputText] = useState("");
-  const [characterLimit] = useState(150);
-  const handleChange = (event) => {
-    setInputText(event.target.value);
-  };
 
   const dataModules = [
     {
@@ -61,9 +56,9 @@ export default function Sidebar() {
 
   useEffect(() => {
     if (pathname.includes("/forum")) {
-      setActiveTab("forum");
+      setactivetab("forum");
     } else if (pathname.includes("/content")) {
-      setActiveTab("content");
+      setactivetab("content");
     }
   }, [pathname]);
 
@@ -162,102 +157,7 @@ export default function Sidebar() {
         </div>
       </TabsContent>
       <TabsContent value="forum">
-        <div className="bg-white p-8 w-full">
-          <h3 className="text-md font-semibold mb-2">Tambah Diskusi Baru</h3>
-          <form>
-            <div className="mb-4">
-              <label
-                htmlFor="discussionFor"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Diskusi Untuk
-              </label>
-              <select
-                id="discussionFor"
-                name="discussionFor"
-                className="font-semibold block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-              >
-                <option>Dosen</option>
-                <option>Mahasiswa</option>
-                <option>Lainnya</option>
-              </select>
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="title"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Judul Postinganmu
-              </label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-                placeholder="Masukkan judul"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="content"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Isi Postinganmu
-              </label>
-
-              <div className="relative">
-                <textarea
-                  id="content"
-                  name="content"
-                  value={inputText}
-                  onChange={handleChange}
-                  maxLength={characterLimit}
-                  className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-                  placeholder="Masukkan isi"
-                  rows="4"
-                ></textarea>
-                <div className="flex justify-end mt-1">
-                  <span
-                    className={`text-sm ${
-                      inputText.length === characterLimit
-                        ? "text-red-500"
-                        : "text-gray-500"
-                    }`}
-                  >
-                    {inputText.length}/{characterLimit} karakter
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="mb-4 flex flex-col items-center justify-center w-full">
-              <div
-                id="clickArea"
-                className="w-80 h-24 flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-lg cursor-pointer"
-              >
-                <p className="text-gray-500 mt-2">Klik untuk upload</p>
-                <p className="text-sm text-gray-400">
-                  Maksimum 10 MB, Format Gambar
-                </p>
-                <input
-                  id="imageUpload"
-                  type="file"
-                  className="hidden"
-                  accept="image/*"
-                />
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="bg-[#fe9800] text-white font-semibold py-2 px-4 rounded-md w-full"
-            >
-              Kirim
-            </button>
-          </form>
-        </div>
+        <NewForum />
       </TabsContent>
     </Tabs>
   );
