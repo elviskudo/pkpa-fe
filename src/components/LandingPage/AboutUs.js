@@ -3,7 +3,7 @@
 
 export default function AboutUs() {
     return (
-        <div className="py-16 bg-white flex flex-col md:flex-row items-start gap-8 max-w-7xl mx-auto px-4">
+        <div className="scroll-mt-24 py-16 bg-white flex flex-col md:flex-row items-start gap-8 max-w-7xl mx-auto px-4">
             <div className="md:w-1/2">
                 <h3 className="text-orange-500 font-bold text-lg mb-2">TENTANG KAMI</h3>
                 <h2 className="text-3xl font-bold mb-4 leading-tight">

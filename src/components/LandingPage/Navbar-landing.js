@@ -1,4 +1,5 @@
-// components/User/Navbar-landing.js
+// components/LandingPage/Navbar-landing.js
+"use client";
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -24,7 +25,7 @@ const NavbarLanding = () => {
           />
         </Link>
       </div>
-      <ul className="flex space-x-6">
+      <ul className="scroll-mt-24 flex space-x-6">
         <li>
           <Link href="#university" className="text-gray-600 hover:text-gray-900">
             Universitas
