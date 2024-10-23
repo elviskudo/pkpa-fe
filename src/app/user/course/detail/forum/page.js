@@ -7,17 +7,59 @@ import Sidebar from "@/components/User/detail/Sidebar";
 import Accordion from "@/components/User/detail/Accordion";
 
 export default function Forum() {
-  const dataForum = [
+  const forumTopic = [
     {
-      name: "John Dono",
-      title: "At lacus, in rhoncus ultrices rutrum vel nunc donec suspendisse",
-      desc: "Hi,Ive been learning Japanese on Duolingo for ~8 months now, and while Im pretty happy with the course so far, the basic skills break too often. I'm the kind of user that likes to have everything gold before proceeding to the newer lessons, and I must say that having to re-do hiragana lessons after you have clearly mastered them (beyond lets say checkpoint 3) is pretty annoying. I think it would be good to make hiragana and the skills from before checkpoint 1 break less often once you have passed.",
-      background_image:
+      id: 1,
+      uuid: "2345-2345-2345",
+      title: "Topic 1",
+      content: "This is topic 1",
+      image_url:
         "https://pkpa.s3.ap-southeast-1.amazonaws.com/1/course/1692522225272_Peran%20Organisasi%20Advokat.jpg",
-      like: 12,
-      dislike: 0,
-      timestamp: "2024-10-19T23:34:00Z",
-      reply: 1,
+      user_id: "3455-4352-3456",
+      user: {
+        id: "3455-4352-3456",
+        name: "John Doe",
+        email: "john.doe@example.com",
+        phone: "+628755678765",
+      },
+      like_count: 15,
+      dislike_count: 10,
+      comments: [
+        {
+          id: 1,
+          uuid: "2345-2345-2345",
+          content: "This is comment 1",
+          user_id: "3455-4352-3456",
+          user: {
+            id: "3455-4352-3456",
+            name: "John Doe",
+            email: "john.doe@example.com",
+            phone: "+628755678765",
+          },
+          like_count: 5,
+          dislike_count: 2,
+          created_at: "2024-10-10 20:12:11",
+          updated_at: "2024-10-10 20:12:11",
+        },
+        {
+          id: 2,
+          uuid: "2345-2345-2345",
+          content: "This is comment 2",
+          user_id: "3455-4352-3456",
+          user: {
+            id: "3455-4352-3456",
+            name: "John Doe",
+            email: "john.doe@example.com",
+            phone: "+628755678765",
+          },
+          like_count: 5,
+          dislike_count: 2,
+          created_at: "2024-10-10 20:12:11",
+          updated_at: "2024-10-10 20:12:11",
+        },
+      ],
+      created_at: "2024-10-10 20:12:11",
+      updated_at: "2024-10-10 20:12:11",
     },
   ];
 
@@ -47,7 +89,6 @@ export default function Forum() {
         <div className="basis-1/4 min-h-screen bg-white">
           <Sidebar />
         </div>
-
         <div className="basis-3/4 min-h-screen bg-white flex flex-col items-center">
           <div className="flex justify-center w-full bg-[#fe9800] py-4 px-6 text-base font-medium">
             <div className="flex items-center space-x-2">
@@ -67,8 +108,8 @@ export default function Forum() {
           </div>
 
           <div className="text-black mt-4 w-10/12">
-            {dataForum.map((forum, index) => (
-              <Accordion key={index} title={forum.title} forum={forum} />
+            {forumTopic.map((topic, index) => (
+              <Accordion key={index} title={topic.title} topics={topic} />
             ))}
           </div>
         </div>
