@@ -2,16 +2,16 @@ import React, { useState, useEffect, Children, cloneElement } from "react";
 import "./Tabs.css";
 
 export const Tabs = ({ children, value, onValueChange, ...props }) => {
-  const [activeTab, setActiveTab] = useState(value || children[0].props.value);
+  const [activeTab, setactivetab] = useState(value || children[0].props.value);
 
   useEffect(() => {
-    if (value !== undefined) {
-      setActiveTab(value);
+    if (value !== "") {
+      setactivetab(value);
     }
   }, [value]);
 
   const handleTabChange = (newValue) => {
-    setActiveTab(newValue);
+    setactivetab(newValue);
     if (onValueChange) {
       onValueChange(newValue);
     }
@@ -25,7 +25,7 @@ export const Tabs = ({ children, value, onValueChange, ...props }) => {
       {Children.map(children, (child) => {
         return cloneElement(child, {
           active: child.props.value === activeTab,
-          setActiveTab: handleTabChange,
+          setactivetab: handleTabChange,
         });
       })}
     </div>
@@ -37,12 +37,12 @@ export const TabsTrigger = ({
   children,
   icon,
   active,
-  setActiveTab,
+  setactivetab,
   ...props
 }) => {
   const handleClick = () => {
-    if (setActiveTab) {
-      setActiveTab(value);
+    if (setactivetab) {
+      setactivetab(value);
     }
   };
 
