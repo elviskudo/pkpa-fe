@@ -1,0 +1,28 @@
+.custom-swal-popup {
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.custom-swal-title {
+    color: #3f3f3f;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.custom-swal-confirm {
+    background-color: #fe9800;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 10px 20px;
+}
+
+.custom-swal-cancel {
+    background-color: white;
+    color: #6e6e6e;
+    border-radius: 5px;
+    border-color: #6e6e6e;
+    padding: 10px 20px;
+}
