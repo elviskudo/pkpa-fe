@@ -16,7 +16,7 @@ export default function Home() {
       <NavbarLanding />
 
       {/* Wrap the rest of the content in the container */}
-      <div className="container">
+      <div className="w-full mx-auto">
         <div id="carousel" className="scroll-mt-24"><Carousel /></div>
         <div id="university" className="scroll-mt-24"><UniversityList /></div>
         <div id="about" className="scroll-mt-24"><AboutUs /></div>

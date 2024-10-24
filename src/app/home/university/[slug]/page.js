@@ -50,7 +50,7 @@ export default function UniversityPage() {
     return (
         <>
             <NavbarLogin />
-            <div className="container ">
+            <div className="w-full mx-auto">
                 <div id="profile"  className="scroll-mt-24">
                     <CampusProfile university={university} />
                 </div>
