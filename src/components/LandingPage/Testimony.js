@@ -1,5 +1,4 @@
 // components/User/Testimoni.js
-"use client";
 import Image from 'next/image';
 
 const testimonials = [
@@ -31,8 +30,8 @@ const testimonials = [
 
 export default function Testimony() {
   return (
-    <div className="py-16 bg-gray-50 border-t-2">
-      <div className="max-w-7xl mx-auto px-4">
+    <div className="py-16 bg-gray-50 border-t-2 w-full px-8">
+      <div className="w-full mx-auto">
         <h2 className="text-3xl font-bold text-center mb-12">Testimoni</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {testimonials.map((testimonial, index) => (
