@@ -4,6 +4,8 @@ import * as Yup from "yup";
 import React, { useState } from "react";
 import Image from "next/image";
 import { XCircleIcon } from "@heroicons/react/20/solid";
+import { insert } from "@/app/redux/features/forumSlice";
+import { useDispatch } from "react-redux";
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024;
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
@@ -47,6 +49,8 @@ export default function NewForum() {
     if (fileInput) fileInput.value = "";
   };
 
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       discussionFor: "",
@@ -76,9 +80,16 @@ export default function NewForum() {
         ),
     }),
     onSubmit: (values) => {
-      console.log("Form Values:", values);
-      formik.resetForm();
-      setImagePreview(null);
+      // console.log("Form Values:", values);
+      // formik.resetForm();
+      // setImagePreview(null);
+      dispatch(
+        insert({
+          discussionFor: values.discussionFor,
+          title: values.title,
+          content: values.content,
+        })
+      );
     },
   });
 
