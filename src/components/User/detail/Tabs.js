@@ -18,14 +18,11 @@ export const Tabs = ({ children, value, onValueChange, ...props }) => {
   };
 
   return (
-    <div
-      {...props}
-      className={`${props.className ? props.className : ""} tabs`}
-    >
+    <div className={`${props.className ? props.className : ""} tabs`}>
       {Children.map(children, (child) => {
         return cloneElement(child, {
           active: child.props.value === activeTab,
-          setactivetab: handleTabChange,
+          setactivetab: handleTabChange, // Tetap diteruskan ke anak
         });
       })}
     </div>
@@ -54,7 +51,7 @@ export const TabsTrigger = ({
       } py-4 px-10 tabsTrigger ${active ? "active" : ""}`}
       onClick={handleClick}
     >
-      <span className="tab-icon">{icon}</span> {}
+      <span className="tab-icon">{icon}</span>
       {children}
     </div>
   );
