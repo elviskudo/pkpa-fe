@@ -1,11 +1,11 @@
-"use client";
 import { configureStore } from "@reduxjs/toolkit";
-import { forumReducer } from "./features/forumSlice";
+import forumReducer from "@/app/redux/features/forumSlice";
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     forum: forumReducer,
   },
 });
 
+console.log(forumReducer);
 export default store;
