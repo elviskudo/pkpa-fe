@@ -70,7 +70,7 @@ export default function Accordion({ title, topics }) {
               clip-rule="evenodd"
             />
           </svg>
-          <span>{topics.comments.length}</span>
+          <span>{(topics.comments && topics.comments.length) || 0}</span>
         </div>
       </button>
       {isOpen && (
@@ -81,12 +81,14 @@ export default function Accordion({ title, topics }) {
                 {topics.user.name}
               </h4>
               <div className="mt-4">
-                <Image
-                  src={topics.image_url}
-                  alt={topics.image_url}
-                  width={104}
-                  height={60}
-                />
+                {topics.image_url && (
+                  <Image
+                    src={topics.image_url}
+                    alt={topics.image_url}
+                    width={104}
+                    height={60}
+                  />
+                )}
               </div>
               <p className="my-4">{topics.content}</p>
             </div>

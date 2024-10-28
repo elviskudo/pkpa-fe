@@ -1,17 +1,18 @@
 "use client";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import React, { useState } from "react";
 import Image from "next/image";
 import { XCircleIcon } from "@heroicons/react/20/solid";
-import { insert } from "@/app/redux/features/forumSlice";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { insert } from "@/app/redux/features/forumSlice";
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024;
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
 
 export default function NewForum() {
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
 
   const handleImageChange = (event) => {
     const file = event.currentTarget.files[0];
@@ -32,6 +33,7 @@ export default function NewForum() {
         event.target.value = null;
         return;
       }
+      setImageFile(file);
       formik.setFieldValue("imageUpload", file);
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -44,6 +46,7 @@ export default function NewForum() {
   const removeSelectedImage = (e) => {
     e.preventDefault();
     setImagePreview(null);
+    setImageFile(null);
     formik.setFieldValue("imageUpload", null);
     const fileInput = document.getElementById("imageUpload");
     if (fileInput) fileInput.value = "";
@@ -80,14 +83,15 @@ export default function NewForum() {
         ),
     }),
     onSubmit: (values) => {
-      // console.log("Form Values:", values);
-      // formik.resetForm();
-      // setImagePreview(null);
+      const image_url = imageFile ? URL.createObjectURL(imageFile) : null;
+      formik.resetForm();
+      setImagePreview(null);
       dispatch(
         insert({
           discussionFor: values.discussionFor,
           title: values.title,
           content: values.content,
+          image_url,
         })
       );
     },
