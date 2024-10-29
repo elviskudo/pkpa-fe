@@ -57,6 +57,8 @@ export const forumSlice = createSlice({
             email: "john.doe@example.com",
             phone: "+628755678765",
           },
+          like_count: 0,
+          dislike_count: 0,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         };
