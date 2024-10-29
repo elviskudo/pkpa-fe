@@ -14,8 +14,8 @@ const UserRegistered = ({ registered, showDrawer, setShowDrawer, addUser, editUs
 
     const handleDelete = () => {
         Swal.fire({
-            title: 'Apakah Yakin Ingin Menghapus?',
-            text: "Data Tidak Bisa Dikembalikan!",
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
