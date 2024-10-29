@@ -1,5 +1,5 @@
-import Accordion from "@/components/User/Accordion";
-import Sidebar from "@/components/User/Sidebar";
+import Accordion from "@/components/User/accordion";
+import Sidebar from "@/components/User/sidebar";
 
 export default function Page() {
   const dataCourseByCategories = [
