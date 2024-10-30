@@ -97,11 +97,11 @@ const BankContent = ({ contents, onAddCourseClick }) => {
                     </div>
                 ),
             }),
-            columnHelper.accessor('total_materi', {
+            columnHelper.accessor('topics', {
                 header: 'Total Materi',
                 cell: (info) => (
                     <div className="text-center">
-                        {info.row.original.detail.length}
+                        {info.row.original.topics.length} {/* Updated to use topics */}
                     </div>
                 ),
             }),
@@ -133,9 +133,10 @@ const BankContent = ({ contents, onAddCourseClick }) => {
         return localCourses.filter((item) =>
             !item.is_archived && // Filter out archived items
             item.name.toLowerCase().includes(searchText.toLowerCase()) &&
-            (university === '' || item.university.name === university)
+            (university === '' || item.university.name === university) &&
+            (filterBy === '' || item.category.name === filterBy) // Filter by category
         );
-    }, [localCourses, searchText, university]);
+    }, [localCourses, searchText, university, filterBy]);
 
     const table = useReactTable({
         data: filteredData,
@@ -182,10 +183,10 @@ const BankContent = ({ contents, onAddCourseClick }) => {
                                 value={filterBy}
                                 onChange={(e) => setFilterBy(e.target.value)}
                                 className="border rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-300">
-                                <option value="">Pilih</option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
+                                <option value="">Pilih Kategori</option>
+                                {[...new Set(contents.map(item => item.category.name))].map((category, index) => (
+                                    <option key={index} value={category}>{category}</option>
+                                ))}
                             </select>
                         </div>
 

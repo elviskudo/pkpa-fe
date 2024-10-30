@@ -8,31 +8,30 @@ import dataMenu from "@/data/DataMenuConfig";
 import BankContent from "@/components/Admin/BankContent/BankContent";
 import AddCourse from "@/components/Admin/BankContent/AddCourse";
 import AddTopic from "@/components/Admin/BankContent/AddTopic";
-import dataMateri from "@/data/DataMateri";
+import dataCourse from "@/data/DataCourse";
 
 export default function Home() {
-    {/* Start to sidebar and navbar functionality */}
     const [isOpen, setIsOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [showAddCourse, setShowAddCourse] = useState(false);
     const [showAddTopic, setShowAddTopic] = useState(false);
     const handleBackToContent = () => setShowAddCourse(false);
     const handleBackToCourse = () => setShowAddTopic(false);
-    const [courses, setCourses] = useState(dataMateri);
-    
+    const [courses, setCourses] = useState(dataCourse); // Use dataCourse
+
     const pathname = usePathname();
-    // Ensure the component is mounted on the client before rendering dynamic elements
+
     useEffect(() => {
         const storedSidebarState = localStorage.getItem("sidebar-open");
         if (storedSidebarState) {
             setIsOpen(JSON.parse(storedSidebarState));
         }
-        setMounted(true); // Set mounted to true after the component mounts
+        setMounted(true);
     }, []);
 
     const handleAddCourse = (newCourse) => {
         setCourses([...courses, newCourse]);
-        setShowAddCourse(false); // Hide the form after saving
+        setShowAddCourse(false);
     };
 
     const handleSidebarToggle = () => {
@@ -41,10 +40,8 @@ export default function Home() {
             return !prev;
         });
     };
-    // Prevent rendering until the component has mounted on the client
-    if (!mounted) return null;
-    {/* End Of Sidebar and Navbar functionality (Tambahkan kode dibawah) */}
 
+    if (!mounted) return null;
 
     return (
         <div className="flex h-screen">
@@ -53,11 +50,11 @@ export default function Home() {
                 <NavbarAdmin onToggle={handleSidebarToggle} pathname={pathname} dataMenu={dataMenu} />
                 <div className="w-full mx-auto p-8">
                     {showAddTopic ? (
-                        <AddTopic onBack={handleBackToCourse} /> // Display AddTopic if showAddTopic is true
+                        <AddTopic onBack={handleBackToCourse} />
                     ) : showAddCourse ? (
-                        <AddCourse onBack={handleBackToContent} onAddTopicClick={() => setShowAddTopic(true)} onSave={handleAddCourse} />
+                        <AddCourse dataCourse={dataCourse} onBack={handleBackToContent} onAddTopicClick={() => setShowAddTopic(true)} onSave={handleAddCourse} />
                     ) : (
-                        <BankContent contents={dataMateri} onAddCourseClick={() => setShowAddCourse(true)} />
+                        <BankContent contents={dataCourse} onAddCourseClick={() => setShowAddCourse(true)} /> // Updated to dataCourse
                     )}
                 </div>
             </div>
