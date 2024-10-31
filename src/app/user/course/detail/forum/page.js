@@ -6,65 +6,19 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Sidebar from "@/components/User/detail/Sidebar";
 import Accordion from "@/components/User/detail/Accordion";
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 export default function Forum() {
-  // const forumTopic = [
-  //   {
-  //     id: 1,
-  //     uuid: "2345-2345-2345",
-  //     title: "Topic 1",
-  //     content: "This is topic 1",
-  //     image_url:
-  //       "https://pkpa.s3.ap-southeast-1.amazonaws.com/1/course/1692522225272_Peran%20Organisasi%20Advokat.jpg",
-  //     user_id: "3455-4352-3456",
-  //     user: {
-  //       id: "3455-4352-3456",
-  //       name: "John Doe",
-  //       email: "john.doe@example.com",
-  //       phone: "+628755678765",
-  //     },
-  //     like_count: 15,
-  //     dislike_count: 10,
-  //     comments: [
-  //       {
-  //         id: 1,
-  //         uuid: "2345-2345-2345",
-  //         content: "This is comment 1",
-  //         user_id: "3455-4352-3456",
-  //         user: {
-  //           id: "3455-4352-3456",
-  //           name: "John Doe",
-  //           email: "john.doe@example.com",
-  //           phone: "+628755678765",
-  //         },
-  //         like_count: 5,
-  //         dislike_count: 2,
-  //         created_at: "2024-10-10 20:12:11",
-  //         updated_at: "2024-10-10 20:12:11",
-  //       },
-  //       {
-  //         id: 2,
-  //         uuid: "2345-2345-2345",
-  //         content: "This is comment 2",
-  //         user_id: "3455-4352-3456",
-  //         user: {
-  //           id: "3455-4352-3456",
-  //           name: "John Doe",
-  //           email: "john.doe@example.com",
-  //           phone: "+628755678765",
-  //         },
-  //         like_count: 5,
-  //         dislike_count: 2,
-  //         created_at: "2024-10-10 20:12:11",
-  //         updated_at: "2024-10-10 20:12:11",
-  //       },
-  //     ],
-  //     created_at: "2024-10-10 20:12:11",
-  //     updated_at: "2024-10-10 20:12:11",
-  //   },
-  // ];
-
   const items = useSelector((state) => state.forum.items);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    console.log(items);
+  }, [items]);
 
   return (
     <div>
@@ -109,15 +63,14 @@ export default function Forum() {
               </div>
             </div>
           </div>
-          {/* <div className="text-black mt-4 w-10/12">
-            {forumTopic.map((topic, index) => (
-              <Accordion key={index} title={topic.title} topics={topic} />
-            ))}
-          </div> */}
-          <div className="text-black mt-4 w-10/12">
-            {items.map((topic, index) => (
-              <Accordion key={index} title={topic.title} topics={topic} />
-            ))}
+          <div className="mt-4 w-10/12">
+            {!isClient ? (
+              <p className="text-center">Memuat Diskusi...</p>
+            ) : (
+              items.map((topic, index) => (
+                <Accordion key={index} title={topic.title} topics={topic} />
+              ))
+            )}
           </div>
         </div>
       </div>

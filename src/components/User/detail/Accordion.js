@@ -5,6 +5,11 @@ import React from "react";
 import Moment from "react-moment";
 import Comments from "./Comments";
 import { getInitials } from "@/libs/Helpers";
+import { useDispatch } from "react-redux";
+import {
+  updateLikeCount,
+  updateDislikeCount,
+} from "@/app/redux/features/forumSlice";
 import {
   HandThumbUpIcon,
   HandThumbDownIcon,
@@ -12,6 +17,7 @@ import {
 } from "@heroicons/react/20/solid";
 
 export default function Accordion({ title, topics }) {
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [hasDisliked, setHasDisliked] = useState(false);
@@ -20,22 +26,24 @@ export default function Accordion({ title, topics }) {
     setIsOpen(!isOpen);
   };
 
-  const handleLike = () => {
-    if (!hasLiked && !hasDisliked) {
-      setHasLiked(true);
-    }
+  const handleLike = (id) => {
     if (hasDisliked) {
+      dispatch(updateDislikeCount({ id }));
       setHasDisliked(false);
+    }
+    if (!hasLiked) {
+      dispatch(updateLikeCount({ id }));
       setHasLiked(true);
     }
   };
 
-  const handleDislike = () => {
-    if (!hasLiked && !hasDisliked) {
-      setHasDisliked(true);
-    }
+  const handleDislike = (id) => {
     if (hasLiked) {
+      dispatch(updateLikeCount({ id }));
       setHasLiked(false);
+    }
+    if (!hasDisliked) {
+      dispatch(updateDislikeCount({ id }));
       setHasDisliked(true);
     }
   };
@@ -57,7 +65,9 @@ export default function Accordion({ title, topics }) {
           </div>
           <div>
             <h3 className="flex text-gray-800 font-semibold">{title}</h3>
-            <h4 className="text-blue-600 font-semibold">{topics.user.name}</h4>
+            <h4 className="flex text-blue-600 font-semibold">
+              {topics.user.name}
+            </h4>
           </div>
         </div>
 
@@ -84,22 +94,28 @@ export default function Accordion({ title, topics }) {
               <div>
                 <div className="flex items-center text-gray-500 text-sm space-x-2">
                   <button
-                    onClick={handleLike}
-                    className={hasLiked ? "text-blue-500" : ""}
+                    onClick={() => handleLike(topics.id)}
+                    className={
+                      hasLiked || topics.like_count > 0 ? "text-blue-500" : ""
+                    }
                   >
                     <HandThumbUpIcon className="h-5 w-5" />
                   </button>
                   <span>
-                    {hasLiked ? topics.like_count + 1 : topics.like_count}
+                    {hasLiked ? topics.like_count : topics.like_count}
                   </span>
                   <button
-                    onClick={handleDislike}
-                    className={hasDisliked ? "text-red-500" : ""}
+                    onClick={() => handleDislike(topics.id)}
+                    className={
+                      hasDisliked || topics.dislike_count > 0
+                        ? "text-red-500"
+                        : ""
+                    }
                   >
                     <HandThumbDownIcon className="h-5 w-5" />
                   </button>
                   <span>
-                    {hasDisliked ? topics.like_count + 1 : topics.like_count}
+                    {hasDisliked ? topics.dislike_count : topics.dislike_count}
                   </span>
                   <span>
                     <Moment fromNow>{topics.created_at}</Moment>

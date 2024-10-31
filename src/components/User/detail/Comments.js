@@ -6,6 +6,7 @@ import { getInitials } from "@/libs/Helpers";
 import { addComment } from "@/app/redux/features/forumSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
+import { commentDisliked, commentLiked } from "@/app/redux/features/forumSlice";
 import { HandThumbUpIcon, HandThumbDownIcon } from "@heroicons/react/20/solid";
 
 export default function Comments({ topics }) {
@@ -42,30 +43,19 @@ export default function Comments({ topics }) {
     setActiveFormIndex(activeFormIndex === index ? null : index);
   };
 
-  const [userReactions, setUserReactions] = useState(
-    topics.comments.map(() => ({ liked: false, disliked: false }))
-  );
+  const [likedComments, setLikedComments] = useState({});
+  const [dislikedComments, setDislikedComments] = useState({});
 
-  const handleLike = (index) => {
-    setUserReactions((prev) => {
-      const newReactions = [...prev];
-      newReactions[index] = {
-        liked: !newReactions[index]?.liked,
-        disliked: false,
-      };
-      return newReactions;
-    });
+  const handleLike = (id) => {
+    setDislikedComments((prev) => ({ ...prev, [id]: false }));
+    setLikedComments((prev) => ({ ...prev, [id]: !prev[id] }));
+    dispatch(commentLiked({ id }));
   };
 
-  const handleDislike = (index) => {
-    setUserReactions((prev) => {
-      const newReactions = [...prev];
-      newReactions[index] = {
-        disliked: !newReactions[index]?.disliked,
-        liked: false,
-      };
-      return newReactions;
-    });
+  const handleDislike = (id) => {
+    setLikedComments((prev) => ({ ...prev, [id]: false }));
+    setDislikedComments((prev) => ({ ...prev, [id]: !prev[id] }));
+    dispatch(commentDisliked({ id }));
   };
 
   return (
@@ -147,29 +137,30 @@ export default function Comments({ topics }) {
 
                 <div className="flex items-center justify-between text-gray-500 my-2">
                   <div className="flex items-center space-x-2">
-                    <button onClick={() => handleLike(index)}>
-                      <HandThumbUpIcon
-                        className={`h-5 w-5 ${
-                          userReactions[index]?.liked ? "text-blue-500" : ""
-                        }`}
-                      />
+                    <button
+                      onClick={() => handleLike(comment.id)}
+                      className={
+                        likedComments[comment.id] || comment.like_count > 0
+                          ? "text-blue-500"
+                          : ""
+                      }
+                    >
+                      <HandThumbUpIcon className="h-5 w-5" />
                     </button>
-                    <span>
-                      {comment.like_count +
-                        (userReactions[index]?.liked ? 1 : 0)}
-                    </span>
+                    <span>{comment.like_count}</span>
 
-                    <button onClick={() => handleDislike(index)}>
-                      <HandThumbDownIcon
-                        className={`h-5 w-5 ${
-                          userReactions[index]?.disliked ? "text-red-500" : ""
-                        }`}
-                      />
+                    <button
+                      onClick={() => handleDislike(comment.id)}
+                      className={
+                        dislikedComments[comment.id] ||
+                        comment.dislike_count > 0
+                          ? "text-red-500"
+                          : ""
+                      }
+                    >
+                      <HandThumbDownIcon className="h-5 w-5" />
                     </button>
-                    <span>
-                      {comment.dislike_count +
-                        (userReactions[index]?.disliked ? 1 : 0)}
-                    </span>
+                    <span>{comment.dislike_count}</span>
 
                     <button
                       className="text-sm font-semibold text-gray-600"
@@ -178,6 +169,7 @@ export default function Comments({ topics }) {
                       Jawab
                     </button>
                   </div>
+
                   <div className="text-sm text-gray-400">
                     <Moment fromNow>{comment.created_at}</Moment>
                   </div>
