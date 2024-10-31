@@ -12,7 +12,7 @@ const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
 
 export default function NewForum() {
   const [imagePreview, setImagePreview] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
+  const [imageBase64, setImageBase64] = useState(null);
 
   const handleImageChange = (event) => {
     const file = event.currentTarget.files[0];
@@ -33,11 +33,12 @@ export default function NewForum() {
         event.target.value = null;
         return;
       }
-      setImageFile(file);
-      formik.setFieldValue("imageUpload", file);
+
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result);
+        setImagePreview(reader.result); 
+        setImageBase64(reader.result);
+        formik.setFieldValue("imageUpload", reader.result); 
       };
       reader.readAsDataURL(file);
     }
@@ -46,7 +47,7 @@ export default function NewForum() {
   const removeSelectedImage = (e) => {
     e.preventDefault();
     setImagePreview(null);
-    setImageFile(null);
+    setImageBase64(null); // Reset Base64 image
     formik.setFieldValue("imageUpload", null);
     const fileInput = document.getElementById("imageUpload");
     if (fileInput) fileInput.value = "";
@@ -56,42 +57,24 @@ export default function NewForum() {
 
   const formik = useFormik({
     initialValues: {
-      discussionFor: "",
       title: "",
       content: "",
       imageUpload: null,
     },
     validationSchema: Yup.object({
-      discussionFor: Yup.string().required("Wajib Memilih !"),
       title: Yup.string().required("Judul Postingan Wajib Diisi !"),
       content: Yup.string()
         .max(150, "Harus terdiri dari 150 karakter atau kurang")
         .required("Isi Postingan Wajib Diisi !"),
-      imageUpload: Yup.mixed()
-        .nullable()
-        .test("fileSize", "Ukuran file terlalu besar (max 2MB)", (value) => {
-          if (!value) return true;
-          return value.size <= MAX_FILE_SIZE;
-        })
-        .test(
-          "fileFormat",
-          "Format file tidak didukung (*.jpeg, *.jpg, *.png)",
-          (value) => {
-            if (!value) return true;
-            return SUPPORTED_FORMATS.includes(value.type);
-          }
-        ),
     }),
     onSubmit: (values) => {
-      const image_url = imageFile ? URL.createObjectURL(imageFile) : null;
       formik.resetForm();
       setImagePreview(null);
       dispatch(
         insert({
-          discussionFor: values.discussionFor,
           title: values.title,
           content: values.content,
-          image_url,
+          image_url: imageBase64,
         })
       );
     },
@@ -101,33 +84,6 @@ export default function NewForum() {
     <div className="bg-white p-8 w-full">
       <h3 className="text-md font-semibold mb-2">Tambah Diskusi Baru</h3>
       <form onSubmit={formik.handleSubmit}>
-        <div className="mb-4">
-          <label
-            htmlFor="discussionFor"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Diskusi Untuk <span className="text-red-500">*</span>
-          </label>
-          <select
-            id="discussionFor"
-            name="discussionFor"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.discussionFor}
-            className="font-semibold block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-          >
-            <option value="">Pilih Kategori</option>
-            <option value="dosen">Dosen</option>
-            <option value="mahasiswa">Mahasiswa</option>
-            <option value="lainnya">Lainnya</option>
-          </select>
-          {formik.touched.discussionFor && formik.errors.discussionFor && (
-            <div className="text-red-500 text-sm mt-1">
-              {formik.errors.discussionFor}
-            </div>
-          )}
-        </div>
-
         <div className="mb-4">
           <label
             htmlFor="title"
