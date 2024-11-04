@@ -64,12 +64,14 @@ export default function Forum() {
             </div>
           </div>
           <div className="mt-4 w-10/12">
-            {!isClient ? (
-              <p className="text-center">Memuat Diskusi...</p>
+            {isClient ? (
+              items
+                .filter((topic) => topic.topic_archived === false)
+                .map((topic, index) => (
+                  <Accordion key={index} title={topic.title} topics={topic} />
+                ))
             ) : (
-              items.map((topic, index) => (
-                <Accordion key={index} title={topic.title} topics={topic} />
-              ))
+              <p className="text-center">Memuat Diskusi...</p>
             )}
           </div>
         </div>
