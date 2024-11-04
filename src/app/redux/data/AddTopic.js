@@ -18,7 +18,7 @@ export const insertReducer = (state, action) => {
     comments: [],
     like_count: 0,
     dislike_count: 0,
-    topic_archived: "false",
+    topic_archived: false,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   };

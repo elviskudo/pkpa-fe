@@ -1,12 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { Tabs, TabsContent, TabsTrigger } from "@/components/User/detail/Tabs";
-import Link from "next/link";
 import NewForum from "./NewForum";
 
 export default function Sidebar() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const [activeTab, setactivetab] = useState("content");
@@ -54,6 +54,14 @@ export default function Sidebar() {
     },
   ];
 
+  const handleTabChange = (value) => {
+    if (value === "content") {
+      router.push("/user/course/detail/content");
+    } else if (value === "forum") {
+      router.push("/user/course/detail/forum");
+    }
+  };
+
   useEffect(() => {
     if (pathname.includes("/forum")) {
       setactivetab("forum");
@@ -71,7 +79,7 @@ export default function Sidebar() {
   };
 
   return (
-    <Tabs value={activeTab}>
+    <Tabs value={activeTab} onValueChange={handleTabChange}>
       <TabsTrigger
         value="content"
         icon={
@@ -85,7 +93,7 @@ export default function Sidebar() {
           </svg>
         }
       >
-        <Link href="/user/course/detail/content">Konten Kelas</Link>
+        Konten Kelas
       </TabsTrigger>
       <TabsTrigger
         value="forum"
@@ -101,7 +109,7 @@ export default function Sidebar() {
           </svg>
         }
       >
-        <Link href="/user/course/detail/forum">Forum</Link>
+        Forum
       </TabsTrigger>
       <TabsContent value="content">
         <div className="text-black">

@@ -20,9 +20,14 @@ export const Tabs = ({ children, value, onValueChange, ...props }) => {
   return (
     <div className={`${props.className ? props.className : ""} tabs`}>
       {Children.map(children, (child) => {
+        if (child.type === TabsTrigger) {
+          return cloneElement(child, {
+            active: child.props.value === activeTab,
+            setactivetab: handleTabChange,
+          });
+        }
         return cloneElement(child, {
           active: child.props.value === activeTab,
-          setactivetab: handleTabChange, // Tetap diteruskan ke anak
         });
       })}
     </div>
