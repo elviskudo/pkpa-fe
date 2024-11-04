@@ -1,4 +1,12 @@
 import React, { useMemo, useState } from "react";
+import ViewDrawer from "./ViewDrawer";
+import { useDispatch } from "react-redux";
+import { archiveTopic } from "@/app/redux/features/forumSlice";
+import { useCallback } from "react";
+import { IconButton } from "@mui/material";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import Switch from "@mui/material/Switch";
+import Swal from "sweetalert2";
 import {
   createColumnHelper,
   useReactTable,
@@ -8,8 +16,39 @@ import {
 } from "@tanstack/react-table";
 
 const DataForum = ({ forumTopic = [] }) => {
+  const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const columnHelper = createColumnHelper();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState(null);
+
+  const handleArchive = useCallback(
+    (topic) => {
+      const ArchiveState = !topic.topic_archived;
+      if (ArchiveState) {
+        Swal.fire({
+          title: "Apakah Yakin Ingin Mengarsipkan?",
+          text: "Data akan dipindahkan ke arsip!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Ya, Arsipkan!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            dispatch(archiveTopic({ topicId: topic.id, archived: true }));
+            Swal.fire({
+              title: "Data Diarsipkan!",
+              icon: "success",
+            });
+          }
+        });
+      } else {
+        dispatch(archiveTopic({ topicId: topic.id, archived: false }));
+      }
+    },
+    [dispatch]
+  );
 
   const columns = useMemo(
     () => [
@@ -50,8 +89,36 @@ const DataForum = ({ forumTopic = [] }) => {
           );
         },
       }),
+      columnHelper.display({
+        id: "actions",
+        header: () => <div className="text-center">Aksi</div>,
+        cell: (info) => {
+          const topics = info.row.original;
+          return (
+            <div className="flex items-center justify-center space-x-2">
+              <IconButton
+                color="primary"
+                size="small"
+                onClick={() => {
+                  setSelectedData(topics);
+                  setDrawerOpen(true);
+                }}
+              >
+                <VisibilityOutlinedIcon />
+              </IconButton>
+              <Switch
+                checked={topics.topic_archived || false}
+                onChange={() => handleArchive(topics)}
+                color="primary"
+                size="small"
+              />
+            </div>
+          );
+        },
+        className: "text-center",
+      }),
     ],
-    [columnHelper]
+    [columnHelper, handleArchive, setSelectedData, setDrawerOpen]
   );
 
   const searchData = useMemo(() => {
@@ -71,8 +138,7 @@ const DataForum = ({ forumTopic = [] }) => {
   });
 
   return (
-    <>
-      {/* Top Filters and Button */}
+    <div>
       <div className="bg-white p-6 rounded-md shadow-md mb-6">
         <div className="grid grid-cols-2 gap-4 items-center">
           <div className="relative w-80">
@@ -86,8 +152,6 @@ const DataForum = ({ forumTopic = [] }) => {
           </div>
         </div>
       </div>
-
-      {/* Table with stripes */}
       <table className="min-w-full border-collapse">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -213,7 +277,12 @@ const DataForum = ({ forumTopic = [] }) => {
           </button>
         </div>
       </div>
-    </>
+      <ViewDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        selectedData={selectedData}
+      />
+    </div>
   );
 };
 

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { insertReducer } from "../data/AddTopic";
+import { archiveTopicReducer } from "../data/TopicArchive";
 import {
   updateLikeCountReducer,
   updateDislikeCountReducer,
@@ -22,6 +23,10 @@ const forumSlice = createSlice({
     commentLiked: updateLikeCommentFunction,
     commentDisliked: updateDislikeCommentFunction,
     addComment: addCommentReducer,
+    archiveTopic: archiveTopicReducer,
+    removeTopic: (state, action) => {
+      state.items = state.items.filter((item) => item.id !== action.payload.id);
+    },
   },
 });
 
@@ -32,5 +37,7 @@ export const {
   updateDislikeCount,
   commentLiked,
   commentDisliked,
+  removeTopic,
+  archiveTopic,
 } = forumSlice.actions;
 export default forumSlice.reducer;

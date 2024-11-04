@@ -16,8 +16,9 @@ export const insertReducer = (state, action) => {
       phone: "+628755678765",
     },
     comments: [],
-    like_count: 0, 
+    like_count: 0,
     dislike_count: 0,
+    topic_archived: "false",
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   };
