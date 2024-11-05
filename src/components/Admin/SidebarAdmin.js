@@ -85,7 +85,7 @@ const Sidebar = ({ isOpen, dataMenu, pathname }) => {
               {menu.url ? (
                 // Jika parent memiliki URL, gunakan <Link> untuk navigasi
                 <Link href={menu.url}
-                  className={`flex items-center p-3 text-sm font-medium ${activeMenu === menu.uuid ? "bg-gray-200 text-blue-500" : "text-gray-700 hover:bg-gray-100"} ${isOpen ? "" : "justify-center"}`}
+                  className={`flex items-center p-3 text-sm font-medium ${activeMenu === menu.uuid ? "bg-orange-50 text-[#fe9800]" : "text-gray-700 hover:bg-gray-100"} ${isOpen ? "" : "justify-center"}`}
                   onClick={() => handleParentClick(menu)}
                 >
                   {IconComponent && <IconComponent className="h-6 w-6 mr-3" />}
@@ -95,7 +95,7 @@ const Sidebar = ({ isOpen, dataMenu, pathname }) => {
                 // Jika parent tidak memiliki URL, gunakan div untuk toggle child
                 <div
                   onClick={() => handleParentClick(menu)}
-                  className={`flex items-center p-3 text-sm font-medium cursor-pointer ${isActiveParent ? "bg-gray-200 text-blue-500" : "text-gray-700 hover:bg-gray-100"} ${isOpen ? "" : "justify-center"}`}
+                  className={`flex items-center p-3 text-sm font-medium cursor-pointer ${isActiveParent ? "bg-orange-50 text-[#fe9800]" : "text-gray-700 hover:bg-gray-100"} ${isOpen ? "" : "justify-center"}`}
                 >
                   {IconComponent && <IconComponent className="h-6 w-6 mr-3" />}
                   {isOpen && <span>{menu.name}</span>}
@@ -110,7 +110,7 @@ const Sidebar = ({ isOpen, dataMenu, pathname }) => {
                     return (
                       <li key={child.id}>
                         <Link href={child.url}
-                          className={`flex items-center p-2 text-sm font-medium ${activeMenu === child.uuid ? "bg-gray-100 text-blue-500" : "text-gray-600 hover:bg-gray-50"} ${isOpen ? "" : "justify-center"}`}
+                          className={`flex items-center p-2 text-sm font-medium ${activeMenu === child.uuid ? "bg-orange-50 text-[#fe9800]" : "text-gray-600 hover:bg-gray-50"} ${isOpen ? "" : "justify-center"}`}
                         >
                           {ChildIconComponent && <ChildIconComponent className="h-5 w-5 mr-2" />}
                           {isOpen && <span>{child.name}</span>}
