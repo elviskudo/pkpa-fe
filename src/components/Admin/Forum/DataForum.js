@@ -3,6 +3,7 @@ import ViewDrawer from "./ViewDrawer";
 import { useDispatch } from "react-redux";
 import { archiveTopic } from "@/app/redux/features/forumSlice";
 import { useCallback } from "react";
+import Moment from "react-moment";
 import { IconButton } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import Switch from "@mui/material/Switch";
@@ -54,36 +55,68 @@ const DataForum = ({ forumTopic = [] }) => {
     () => [
       columnHelper.accessor("user.name", {
         header: "Nama Pengguna",
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+          <span className="font-semibold">{info.getValue()}</span>
+        ),
       }),
       columnHelper.accessor("title", {
         header: "Judul Post",
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+          <span className="font-semibold">{info.getValue()}</span>
+        ),
+      }),
+      columnHelper.accessor("created_at", {
+        header: "Tanggal Buat",
+        cell: (info) => (
+          <Moment
+            format="D/MM/YY"
+            className="flex justify-center items-center"
+            style={{ color: "gray" }}
+          >
+            {info.getValue()}
+          </Moment>
+        ),
       }),
       columnHelper.accessor("comments", {
         header: "Komentar",
         cell: (info) => {
           const count = info.getValue().length;
-          return <span style={{ color: "gray" }}>{`${count} komentar`}</span>;
+          return (
+            <span
+              className="flex justify-center items-center"
+              style={{ color: "gray" }}
+            >{`${count} komentar`}</span>
+          );
         },
       }),
       columnHelper.accessor("like_count", {
-        header: "Like",
+        header: "Disukai",
         cell: (info) => {
           const count = info.getValue();
           return (
-            <span className="text-center" style={{ color: "gray" }}>
+            <span
+              className="flex justify-center items-center"
+              style={{ color: "gray" }}
+            >
               {count}
             </span>
           );
         },
       }),
       columnHelper.accessor("dislike_count", {
-        header: "Dislike",
+        header: () => (
+          <div className="flex flex-col items-center">
+            <span>Tidak</span>
+            <span>Disukai</span>
+          </div>
+        ),
         cell: (info) => {
           const count = info.getValue();
           return (
-            <span className="text-center" style={{ color: "gray" }}>
+            <span
+              className="flex justify-center items-center"
+              style={{ color: "gray" }}
+            >
               {count}
             </span>
           );
@@ -97,7 +130,7 @@ const DataForum = ({ forumTopic = [] }) => {
           return (
             <div className="flex items-center justify-center space-x-2">
               <IconButton
-                color="primary"
+                color="warning"
                 size="small"
                 onClick={() => {
                   setSelectedData(topics);
@@ -106,10 +139,22 @@ const DataForum = ({ forumTopic = [] }) => {
               >
                 <VisibilityOutlinedIcon />
               </IconButton>
+            </div>
+          );
+        },
+        className: "text-center",
+      }),
+      columnHelper.display({
+        id: "actions",
+        header: () => <div className="text-center">Arsip</div>,
+        cell: (info) => {
+          const topics = info.row.original;
+          return (
+            <div className="flex items-center justify-center space-x-2">
               <Switch
                 checked={topics.topic_archived || false}
                 onChange={() => handleArchive(topics)}
-                color="primary"
+                color="warning"
                 size="small"
               />
             </div>
