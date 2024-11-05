@@ -3,10 +3,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Moment from "react-moment";
 import { getInitials } from "@/libs/Helpers";
-import { addComment } from "@/app/redux/features/forumSlice";
+import Swal from "sweetalert2";
+import { addComment, removeComment } from "@/app/redux/features/forumSlice";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import IconButton from "@mui/material/IconButton";
 import { commentDisliked, commentLiked } from "@/app/redux/features/forumSlice";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { HandThumbUpIcon, HandThumbDownIcon } from "@heroicons/react/20/solid";
 
 export default function Comments({ topics }) {
@@ -57,6 +60,38 @@ export default function Comments({ topics }) {
     setDislikedComments((prev) => ({ ...prev, [id]: !prev[id] }));
     dispatch(commentDisliked({ id }));
   };
+
+  const handleDelete = useCallback(
+    (commentId) => {
+      Swal.fire({
+        title: "Apakah anda yakin?",
+        text: "Komentar yang dihapus tidak dapat dikembalikan!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#fe9800",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, hapus!",
+        cancelButtonText: "Batal",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(
+            removeComment({
+              topicId: topics.id,
+              commentId: commentId,
+            })
+          );
+
+          Swal.fire({
+            title: "Terhapus!",
+            text: "Komentar berhasil dihapus.",
+            icon: "success",
+            confirmButtonColor: "#fe9800",
+          });
+        }
+      });
+    },
+    [dispatch, topics.id]
+  );
 
   return (
     <div>
@@ -123,15 +158,24 @@ export default function Comments({ topics }) {
               </div>
 
               <div className="flex-1">
-                <div className="mb-2 flex-1 space-x-2">
-                  <span className="font-semibold text-gray-700">
-                    {comment.user.name}
-                  </span>
-                  <span className="text-sm text-gray-500">
-                    <Moment format="DD MMMM YYYY, HH:mm [WIB]">
-                      {comment.created_at}
-                    </Moment>
-                  </span>
+                <div className="mb-2 flex justify-between">
+                  <div className="space-x-2">
+                    <span className="font-semibold text-gray-700">
+                      {comment.user.name}
+                    </span>
+                    <span className="text-sm text-gray-500">
+                      <Moment format="DD MMMM YYYY, HH:mm [WIB]">
+                        {comment.created_at}
+                      </Moment>
+                    </span>
+                  </div>
+                  <IconButton
+                    color="warning"
+                    size="small"
+                    onClick={() => handleDelete(comment.id)}
+                  >
+                    <DeleteForeverOutlinedIcon />
+                  </IconButton>
                 </div>
                 <p className="text-gray-700 mb-4">{comment.content}</p>
 

@@ -24,8 +24,14 @@ const forumSlice = createSlice({
     commentDisliked: updateDislikeCommentFunction,
     addComment: addCommentReducer,
     archiveTopic: archiveTopicReducer,
-    removeTopic: (state, action) => {
-      state.items = state.items.filter((item) => item.id !== action.payload.id);
+    removeComment: (state, action) => {
+      const { topicId, commentId } = action.payload;
+      const topic = state.items.find((item) => item.id === topicId);
+      if (topic) {
+        topic.comments = topic.comments.filter(
+          (comment) => comment.id !== commentId
+        );
+      }
     },
   },
 });
@@ -37,7 +43,7 @@ export const {
   updateDislikeCount,
   commentLiked,
   commentDisliked,
-  removeTopic,
+  removeComment,
   archiveTopic,
 } = forumSlice.actions;
 export default forumSlice.reducer;
