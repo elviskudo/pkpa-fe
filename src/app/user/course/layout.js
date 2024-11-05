@@ -1,6 +1,6 @@
 import { Raleway, Open_Sans } from "next/font/google";
 import "/public/globals.css";
-import Topbar from "@/components/User/Topbar";
+import ForumProvider from "@/app/redux/provider";
 
 const raleway = Raleway({
   subsets: ["latin"],
@@ -23,10 +23,7 @@ export default function Course({ children }) {
   return (
     <html lang="en" className={`${raleway.variable} ${openSans.variable}`}>
       <body className="bg-gray-100">
-        <Topbar />
-        <div>
-          <main>{children}</main>
-        </div>
+        <ForumProvider>{children}</ForumProvider>
       </body>
     </html>
   );
