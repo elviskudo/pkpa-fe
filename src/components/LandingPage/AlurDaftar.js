@@ -1,54 +1,59 @@
 // components/User/AlurPendaftaran.js
 "use client";
-
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Navigation, Pagination } from "swiper/modules";
 
 const steps = [
   {
     number: "01",
     title: "Pilih Universitas",
-    description: "PKPA ADR Academy bekerja sama dengan universitas-universitas ternama dalam menyelenggarakan Pendidikan Khusus Profesi Advokat. Rasakan nuansa pengajaran yang berbeda dari universitas-universitas pilihan. Pilih universitas favorit dan ikuti periode gelombang pendaftaran yang tersedia.",
+    description:
+      "PKPA ADR Academy bekerja sama dengan universitas-universitas ternama dalam menyelenggarakan Pendidikan Khusus Profesi Advokat. Rasakan nuansa pengajaran yang berbeda dari universitas-universitas pilihan. Pilih universitas favorit dan ikuti periode gelombang pendaftaran yang tersedia.",
     image: "/images/slide-belajar.jpg",
   },
   {
     number: "02",
     title: "Pendaftaran",
-    description: "Isi formulir pendaftaran dengan data yang valid dan lengkap. Pastikan semua informasi sesuai dengan persyaratan.",
+    description:
+      "Isi formulir pendaftaran dengan data yang valid dan lengkap. Pastikan semua informasi sesuai dengan persyaratan.",
     image: "/images/slide-belajar.jpg",
   },
   {
     number: "03",
     title: "Validasi Admin",
-    description: "Setelah pendaftaran, admin akan memvalidasi dokumen yang telah dikirimkan untuk memastikan kelengkapan dan kebenaran.",
+    description:
+      "Setelah pendaftaran, admin akan memvalidasi dokumen yang telah dikirimkan untuk memastikan kelengkapan dan kebenaran.",
     image: "/images/slide-belajar.jpg",
   },
   {
     number: "04",
     title: "Tes Masuk",
-    description: "Ikuti tes masuk yang diadakan secara online untuk mengetahui kesiapan Anda dalam mengikuti program PKPA.",
+    description:
+      "Ikuti tes masuk yang diadakan secara online untuk mengetahui kesiapan Anda dalam mengikuti program PKPA.",
     image: "/images/slide-belajar.jpg",
   },
   {
     number: "05",
     title: "Bayar Biaya PKPA",
-    description: "Lakukan pembayaran biaya program sesuai dengan tagihan yang tertera pada halaman pembayaran.",
+    description:
+      "Lakukan pembayaran biaya program sesuai dengan tagihan yang tertera pada halaman pembayaran.",
     image: "/images/slide-belajar.jpg",
   },
   {
     number: "06",
     title: "Mulai Belajar",
-    description: "Setelah semua proses selesai, Anda bisa mulai mengikuti kelas dan belajar dengan materi-materi yang telah disediakan.",
+    description:
+      "Setelah semua proses selesai, Anda bisa mulai mengikuti kelas dan belajar dengan materi-materi yang telah disediakan.",
     image: "/images/slide-belajar.jpg",
   },
 ];
 
 export default function AlurPendaftaran() {
   return (
-    <div className="py-16 bg-white flex flex-col md:flex-row max-w-7xl mx-auto gap-12 px-4">
+    <div className="py-16 bg-white flex flex-col md:flex-row items-start gap-12 w-full px-8 lg:px-12">
       <div className="md:w-1/3 flex flex-col justify-between">
         <div>
           <h2 className="text-3xl font-bold mb-6">Alur Pendaftaran</h2>
@@ -64,7 +69,10 @@ export default function AlurPendaftaran() {
             ))}
           </ul>
         </div>
-        <a href="/brosur.pdf" className="flex items-center mt-8 text-orange-500 hover:underline">
+        <a
+          href="/brosur.pdf"
+          className="flex items-center mt-8 text-orange-500 hover:underline"
+        >
           <img
             src="/images/dl-logo.png" // Path logo download
             alt="Download Logo"
@@ -72,7 +80,6 @@ export default function AlurPendaftaran() {
           />
           Download Brosur
         </a>
-
       </div>
 
       {/* Slider untuk gambar dan teks */}

@@ -17,8 +17,8 @@ export default function Kurikulum() {
   };
 
   return (
-    <div className="py-16 bg-gray-50">
-      <div className="flex flex-col md:flex-row max-w-7xl mx-auto gap-12 px-4">
+    <div className="py-16 bg-gray-50 w-full px-8">
+      <div className="flex flex-col md:flex-row w-full gap-12">
         <div className="md:w-1/2">
           <h2 className="text-3xl font-bold mb-6">Kurikulum</h2>
           <div className="space-y-4">
@@ -58,10 +58,13 @@ export default function Kurikulum() {
           </div>
         </div>
         <div className="md:w-1/2">
-          <img
+          <Image
             src="/images/kurikulum.png"
             alt="Kurikulum"
-            className="w-full rounded-lg shadow-md"
+            className="rounded-lg shadow-md max-w-[75%] w-full mx-auto" 
+            width={800}
+            height={600}
+            layout="responsive"
           />
         </div>
       </div>

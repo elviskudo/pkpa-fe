@@ -21,13 +21,7 @@ const nextConfig = {
       ]
     }
   ],
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/, // Tambahkan aturan untuk meng-handle file .svg
-      use: ['@svgr/webpack'], // Gunakan svgr untuk mengimpor SVG sebagai komponen React
-    });
-    return config; 
-  },
+
 };
 
 export default nextConfig;
