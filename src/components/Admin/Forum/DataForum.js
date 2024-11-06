@@ -123,7 +123,7 @@ const DataForum = ({ forumTopic = [] }) => {
         },
       }),
       columnHelper.display({
-        id: "actions",
+        id: "ViewActions",
         header: () => <div className="text-center">Aksi</div>,
         cell: (info) => {
           const topics = info.row.original;
@@ -145,7 +145,7 @@ const DataForum = ({ forumTopic = [] }) => {
         className: "text-center",
       }),
       columnHelper.display({
-        id: "actions",
+        id: "ArchiveAction",
         header: () => <div className="text-center">Arsip</div>,
         cell: (info) => {
           const topics = info.row.original;
