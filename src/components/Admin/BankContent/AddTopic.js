@@ -33,8 +33,7 @@ const AddTopic = ({ onBack }) => {
                     <select
                         value={order}
                         onChange={(e) => setOrder(e.target.value)}
-                        className="border rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-300"
-                    >
+                        className="border rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-300">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>

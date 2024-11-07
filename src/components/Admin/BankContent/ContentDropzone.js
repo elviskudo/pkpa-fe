@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -8,9 +8,13 @@ const ContentDropzone = ({
     maxFileSize = "10 MB",
     acceptedFormats = "jpg/png, pdf, video",
     onDropFile,
+    file: initialFile,
 }) => {
     const [file, setFile] = useState(null);
-
+    useEffect(() => {
+        // Update state if initialFile changes (e.g., during editing)
+        setFile(initialFile);
+    }, [initialFile]);
     const onDrop = (acceptedFiles) => {
         const uploadedFile = acceptedFiles[0];
         if (uploadedFile) {
@@ -32,6 +36,10 @@ const ContentDropzone = ({
         multiple: false,
     });
 
+    const isFileUrl = typeof file === 'string';
+    const isPdfFile = isFileUrl && file.endsWith('.pdf');
+    const isVideoFile = isFileUrl && (file.endsWith('.mp4') || file.endsWith('.avi'));
+
     return (
         <div
             {...getRootProps({
@@ -41,13 +49,12 @@ const ContentDropzone = ({
             <input {...getInputProps()} />
             {file ? (
                 <div className="relative w-full h-full">
-                    {/* Show image preview, or video/PDF icon if applicable */}
-                    {file.endsWith('.pdf') || file.endsWith('.mp4') ? (
+                    {isPdfFile || isVideoFile ? (
                         <div className="flex flex-col items-center justify-center h-full">
-                            <p className="text-sm text-gray-700">{file.endsWith('.pdf') ? 'PDF File' : 'Video File'}</p>
+                            <p className="text-sm text-gray-700">{isPdfFile ? 'PDF File' : 'Video File'}</p>
                         </div>
                     ) : (
-                        <img src={file} alt="Preview" className="absolute inset-0 w-full h-full object-cover rounded" />
+                        <img src={isFileUrl ? file : URL.createObjectURL(file)} alt="Preview" className="absolute inset-0 w-full h-full object-cover rounded" />
                     )}
                     <button
                         onClick={handleDelete}

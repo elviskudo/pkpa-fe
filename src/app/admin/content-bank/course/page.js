@@ -54,7 +54,7 @@ export default function Home() {
                     ) : showAddCourse ? (
                         <AddCourse dataCourse={dataCourse} onBack={handleBackToContent} onAddTopicClick={() => setShowAddTopic(true)} onSave={handleAddCourse} />
                     ) : (
-                        <BankContent contents={dataCourse} onAddCourseClick={() => setShowAddCourse(true)} /> // Updated to dataCourse
+                        <BankContent contents={courses} onAddCourseClick={() => setShowAddCourse(true)} /> // Updated to dataCourse
                     )}
                 </div>
             </div>
