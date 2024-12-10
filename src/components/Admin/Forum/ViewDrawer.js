@@ -172,7 +172,7 @@ const ViewDrawer = ({ open, onClose, selectedData }) => {
             onClick={handleArchive}
             className="bg-[#fe9800] text-white px-12 py-2 rounded hover:bg-[#e88a00] transition-colors"
           >
-            Archive
+            Arsip
           </button>
         </div>
       </Box>
