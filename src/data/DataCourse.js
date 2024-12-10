@@ -280,76 +280,112 @@ const dataCourse = [
                 end_date: '2023-02-28',
                 is_active: 1,
                 order: 1,
-            }
-        ],
-        tasks: [
-            {
-                id: 1,
-                uuid: '1234-1234-1234',
-                name: 'Task 1',
-                description: 'Task 1',
-                start_date: '2022-01-01',
-                end_date: '2022-01-31',
-                is_active: 1,
-                order: 1,
-                course_id: 1,
-                video_url: '',
-                image_url: '',
-                student_id: 1,
-                student: {
-                    id: 1,
-                    uuid: '12340-1234-1234-',
-                    name: 'John Doe',
-                    email: 'john.doe@example.com',
-                    phone: '1234567890',
-                    address: '123 Main St',
-                    city: 'Anytown',
-                    state: 'CA',
-                    zip: '12345',
-                    country: 'USA',
-                    created_at: '2022-01-01',
-                    updated_at: '2022-01-01',
-                },
-                uploaded_files: [
+                batch_groups: [
                     {
                         id: 1,
-                        uuid: '1234-1234-1234',
-                        name: 'file1',
-                        file_type: 'pdf',
-                        file_url: 'https://example.com/file1.pdf',
-                        uploaded_at: '2022-01-01 00:00:00',
-                        reviewed_by: 1,
-                        reviewed_at: '2022-01-01 00:00:00',
-                        approved_by: 1,
-                        approved_at: '2022-01-01 00:00:00',
-                        rejected_by: 1,
-                        rejected_at: '2022-01-01 00:00:00',
+                        uuid: '2345-2345-2345',
+                        name: 'Sejarah dan Bentuk Organisasi Advokat',
+                        description: 'Sejarah dan Bentuk Organisasi Advokat',
+                        start_date: '2022-01-01',
+                        end_date: '2022-01-31',
+                        is_active: 1,
+                        order: 1,
+                        batches: [
+                            {
+                                id: 1,
+                                uuid: '1234-1234-1234',
+                                name: 'Sejarah Organisasi Advokat',
+                                description: 'Sejarah Organisasi Advokat',
+                                video_url: 'https://pkpa.s3.ap-southeast-1.amazonaws.com/1/course/1692605896296_Sertifikat%20Matkul.png',
+                                start_date: '2022-01-01',
+                                end_date: '2022-01-31',
+                                is_active: 1,
+                                order: 1
+                            },
+                            {
+                                id: 2,
+                                uuid: '1234-1234-1234',
+                                name: 'Bentuk Organisasi',
+                                description: 'Bentuk Organisasi',
+                                video_url: 'https://pkpa.s3.ap-southeast-1.amazonaws.com/',
+                                start_date: '2022-01-01',
+                                end_date: '2022-01-31',
+                                is_active: 1,
+                                order: 2
+                            },
+                        ],
+                        tasks: [
+                            {
+                                id: 1,
+                                uuid: '1234-1234-1234',
+                                name: 'Task 1',
+                                description: 'Task 1',
+                                start_date: '2022-01-01',
+                                end_date: '2022-01-31',
+                                is_active: 1,
+                                order: 1,
+                                course_id: 1,
+                                video_url: '',
+                                image_url: '',
+                                student_id: 1,
+                                student: {
+                                    id: 1,
+                                    uuid: '12340-1234-1234-',
+                                    name: 'John Doe',
+                                    email: 'john.doe@example.com',
+                                    phone: '1234567890',
+                                    address: '123 Main St',
+                                    city: 'Anytown',
+                                    state: 'CA',
+                                    zip: '12345',
+                                    country: 'USA',
+                                    created_at: '2022-01-01',
+                                    updated_at: '2022-01-01',
+                                },
+                                uploaded_files: [
+                                    {
+                                        id: 1,
+                                        uuid: '1234-1234-1234',
+                                        name: 'file1',
+                                        file_type: 'pdf',
+                                        file_url: 'https://example.com/file1.pdf',
+                                        uploaded_at: '2022-01-01 00:00:00',
+                                        reviewed_by: 1,
+                                        reviewed_at: '2022-01-01 00:00:00',
+                                        approved_by: 1,
+                                        approved_at: '2022-01-01 00:00:00',
+                                        rejected_by: 1,
+                                        rejected_at: '2022-01-01 00:00:00',
+                                    }
+                                ]
+                            }
+                        ],
+                        quiz: [
+                            {
+                                id: 1,
+                                uuid: "1323-1234-2342-4545",
+                                question: "University of California, Berkeley berada dimana?",
+                                options: [
+                                    {
+                                        id: 1,
+                                        uuid: "1234-1234-1234",
+                                        option: "California",
+                                    },
+                                    {
+                                        id: 2,
+                                        uuid: "1234-1234-1234",
+                                        option: "New York",
+                                    },
+                                ],
+                                random: 1,
+                                order: 1,
+                                is_active: 1,
+                            }
+                        ]
                     }
                 ]
             }
         ],
-        quiz: [
-            {
-                id: 1,
-                uuid: "1323-1234-2342-4545",
-                question: "University of California, Berkeley berada dimana?",
-                options: [
-                    {
-                        id: 1,
-                        uuid: "1234-1234-1234",
-                        option: "California",
-                    },
-                    {
-                        id: 2,
-                        uuid: "1234-1234-1234",
-                        option: "New York",
-                    },
-                ],
-                random: 1,
-                order: 1,
-                is_active: 1,
-            }
-        ]
     },
 ];
 

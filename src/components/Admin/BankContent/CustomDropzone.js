@@ -5,10 +5,28 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const CustomDropzone = ({ file, setFile, label, onDelete }) => {
-    const onDrop = (acceptedFiles) => {
+    const onDrop = async (acceptedFiles) => {
         const file = acceptedFiles[0];
         if (file) {
-            setFile(URL.createObjectURL(file));
+            // Siapkan data untuk dikirim ke Laravel
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/upload`, {
+                    method: 'POST',
+                    body: formData,
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    setFile(data.url); // Gunakan URL yang dikembalikan dari Cloudinary
+                } else {
+                    console.error('Failed to upload file');
+                }
+            } catch (error) {
+                console.error('Error uploading to Cloudinary:', error);
+            }
         }
     };
 
