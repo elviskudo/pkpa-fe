@@ -15,7 +15,7 @@ const CONFIG = {
 // StatusDisplay Component
 function StatusDisplay({ state, expressions, userName }) {
   return (
-    <div className="mt-4 p-4 rounded-lg bg-gray-100 shadow-md">
+    <div className="mt-4 p-4 rounded-lg bg-black-100 shadow-md">
       <div className="space-y-2">
         <p className="text-lg font-semibold flex items-center">
           <span
@@ -344,7 +344,7 @@ export default function Compare() {
 
   return (
     <div className="relative max-w-2xl mx-auto p-4">
-      <div className="relative bg-black rounded-lg overflow-hidden shadow-xl">
+      <div className="relative bg-white rounded-lg overflow-hidden shadow-xl">
         <video 
           ref={videoRef}
           autoPlay
@@ -360,6 +360,7 @@ export default function Compare() {
       </div>
       
       <StatusDisplay 
+        className="text-black" 
         state={state}
         expressions={state.expressions}
         userName={name}

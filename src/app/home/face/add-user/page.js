@@ -1,9 +1,9 @@
-import UploadPage from "@/components/User/face/add-user"
+import AddUser from "@/components/User/face/add-user"
 
 export default function page (){
     return (
         <div>
-            <UploadPage />
+            <AddUser />
         </div>
     )
 };
