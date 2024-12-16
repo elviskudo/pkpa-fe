@@ -18,7 +18,13 @@ export default function Sidebar() {
     <div className="w-64 h-min bg-white shadow-sm rounded-md">
       <div className="p-4 border-b">
         <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 rounded-full bg-gray-800"></div>
+          <div className="w-8 h-8 rounded-full bg-gray-800 overflow-hidden">
+            <img
+              src="/images/person.png"
+              alt="User Avatar"
+              className="w-full h-full object-cover"
+            />
+          </div>
           <div>
             <h2 className="font-semibold text-black">Jason Brody</h2>
             <Link href="/profile" className="text-sm text-gray-300 hover">
