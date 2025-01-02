@@ -1,11 +1,10 @@
 // components/User/Brosur.js
-"use client";
 import Image from 'next/image';
 
 export default function Brosur() {
   return (
-    <div className="py-16 flex justify-center">
-      <div className="bg-blue-600 rounded-xl flex items-center justify-between px-8 py-12 max-w-7xl w-full shadow-lg relative">
+    <div className="py-16 flex justify-center w-full px-8">
+      <div className="bg-blue-600 rounded-xl flex items-center justify-between px-8 py-12 w-full relative shadow-lg">
         <div className="text-white">
           <div className="mb-4">
             <Image
@@ -24,7 +23,7 @@ export default function Brosur() {
         </div>
 
         {/* Gambar Tiga Ikon di sebelah kiri gambar orang */}
-        <div className="absolute bottom-15 right-[400px]">
+        <div className="absolute bottom-15 right-[30%] lg:right-[40%]">
           <Image
             src="/images/tiga-ikon.png" // Ganti path dengan gambar tiga ikon Anda
             alt="Tiga Ikon"

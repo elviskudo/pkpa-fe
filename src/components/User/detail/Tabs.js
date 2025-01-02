@@ -1,8 +1,21 @@
-import React, { useState, Children, cloneElement } from "react";
+import React, { useState, useEffect, Children, cloneElement } from "react";
 import "./Tabs.css";
 
-export const Tabs = ({ children, ...props }) => {
-  const [activeTab, setActiveTab] = useState(children[0].props.value);
+export const Tabs = ({ children, value, onValueChange, ...props }) => {
+  const [activeTab, setactivetab] = useState(value || children[0].props.value);
+
+  useEffect(() => {
+    if (value !== "") {
+      setactivetab(value);
+    }
+  }, [value]);
+
+  const handleTabChange = (newValue) => {
+    setactivetab(newValue);
+    if (onValueChange) {
+      onValueChange(newValue);
+    }
+  };
 
   return (
     <div
@@ -12,7 +25,7 @@ export const Tabs = ({ children, ...props }) => {
       {Children.map(children, (child) => {
         return cloneElement(child, {
           active: child.props.value === activeTab,
-          setActiveTab,
+          setactivetab: handleTabChange,
         });
       })}
     </div>
@@ -24,21 +37,21 @@ export const TabsTrigger = ({
   children,
   icon,
   active,
-  setActiveTab,
+  setactivetab,
   ...props
 }) => {
   const handleClick = () => {
-    if (setActiveTab) {
-      setActiveTab(value);
+    if (setactivetab) {
+      setactivetab(value);
     }
   };
 
   return (
     <div
       {...props}
-      className={`${props.className ? props.className : ""} py-4 px-10 tabsTrigger ${
-        active ? "active" : ""
-      }`}
+      className={`${
+        props.className ? props.className : ""
+      } py-4 px-10 tabsTrigger ${active ? "active" : ""}`}
       onClick={handleClick}
     >
       <span className="tab-icon">{icon}</span> {}
@@ -47,7 +60,7 @@ export const TabsTrigger = ({
   );
 };
 
-export const TabsContent = ({ children, active = false, ...props }) => {
+export const TabsContent = ({ children, value, active, ...props }) => {
   if (!active) {
     return null;
   }
