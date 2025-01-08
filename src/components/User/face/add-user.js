@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
+import axios from '../../../libs/axios';
 
 export default function AddUser() {
   const videoRef = useRef(null);
@@ -48,65 +49,121 @@ export default function AddUser() {
       return;
     }
 
-    // Konversi data URL ke blob
     const blob = await (await fetch(capture)).blob();
     const file = new File([blob], `${fileName}.png`, { type: 'image/png' });
 
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('fileName', fileName);
+    formData.append('image', file);
+    formData.append('student_email', fileName);
     
     try {
-      const response = await fetch('/api/image-upload', {
-        method: 'POST',
-        body: formData,
+      const response = await axios.post('/api/home/create', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
       });
 
-      const data = await response.json();
+      const data = await response.data;
       
-      if (response.ok) {
-        setUploadStatus(data.message);
+      // Perbaiki penanganan response
+      if (response.status === 201) {  // Sesuaikan dengan status code Laravel
+        setUploadStatus(response.data.message || 'Gambar berhasil diunggah');
       } else {
-        setUploadStatus(data.message || 'Gagal mengunggah gambar');
+        setUploadStatus(response.data.error || 'Gagal mengunggah gambar');
       }
     } catch (error) {
+      // Tangani error lebih detail
+      if (error.response) {
+        // Error dari server
+        setUploadStatus(error.response.data.error || 'Gagal mengunggah gambar');
+      } else if (error.request) {
+        // Error jaringan
+        setUploadStatus('Tidak dapat terhubung ke server');
+      } else {
+        // Error lainnya
+        setUploadStatus('Terjadi kesalahan');
+      }
       console.error('Error:', error);
-      setUploadStatus('Terjadi kesalahan saat mengunggah');
     }
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
-      <video
-        ref={videoRef}
-        autoPlay
-        className="w-full max-w-[600px] rounded-lg"
-      />
-      <button onClick={takeImage} className="mt-4 p-2 bg-blue-500 text-white rounded">
-        Ambil Gambar
-      </button>
-      <input 
-        type='text'
-        value={fileName}
-        onChange={(e) => setFileName(e.target.value)}
-        placeholder="Nama file"
-        className="mt-4 p-2 text-black border rounded"
-      />
-      <button onClick={uploadImage} className="mt-4 p-2 bg-green-500 text-white rounded">
-        Unggah Gambar
-      </button>
-      {uploadStatus && (
-        <div className="mt-4 text-center text-red-500">
-          {uploadStatus}
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-blue-300 flex items-center justify-center p-4">
+      <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-4xl flex space-x-6">
+        {/* Kolom Kamera */}
+        <div className="w-1/2 space-y-4">
+          <h1 className="text-3xl font-extrabold text-center text-gray-800 mb-6">
+            Add New User
+          </h1>
+          
+          <div className="mb-6 rounded-lg overflow-hidden shadow-md">
+            <video
+              ref={videoRef}
+              autoPlay
+              className="w-full h-64 object-cover"
+            />
+          </div>
+          
+          <div className="space-y-4">
+            <input 
+              type='text'
+              value={fileName}
+              onChange={(e) => setFileName(e.target.value)}
+              placeholder="Enter Your Email"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder-gray-400"
+            />
+            
+            <button 
+              onClick={takeImage} 
+              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105 shadow-md"
+            >
+              Capture Image
+            </button>
+          </div>
         </div>
-      )}
-      <canvas ref={canvasRef} className="hidden" />      
-      {capture && (
-        <div className="mt-4">
-          <h2 className="text-lg font-semibold">Hasil Gambar:</h2>
-          <img src={capture} alt="Capture" className="mt-2 rounded-lg max-w-[300px]" />
+
+        {/* Kolom Captured Image */}
+        <div className="w-1/2 space-y-4">
+          <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
+            Captured Image
+          </h2>
+          
+          {capture ? (
+            <div className="space-y-4">
+              <div className="rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src={capture} 
+                  alt="Capture" 
+                  className="w-full h-64 object-cover"
+                />
+              </div>
+              
+              <button 
+                onClick={uploadImage} 
+                className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition duration-300 ease-in-out transform hover:scale-105 shadow-md"
+              >
+                Upload Image
+              </button>
+            </div>
+          ) : (
+            <div className="bg-gray-100 rounded-lg h-64 flex items-center justify-center">
+              <p className="text-gray-500">No image captured</p>
+            </div>
+          )}
+
+          {uploadStatus && (
+            <div className={`mt-4 text-center py-2 rounded ${
+              uploadStatus.includes('berhasil') 
+                ? 'bg-green-100 text-green-700' 
+                : 'bg-red-100 text-red-700'
+            }`}>
+              {uploadStatus}
+            </div>
+          )}
         </div>
-      )}
+        
+        <canvas ref={canvasRef} className="hidden" />
+      </div>
     </div>
   );
 }
