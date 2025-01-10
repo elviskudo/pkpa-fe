@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { RadioGroup } from "@headlessui/react";
-import { useRouter } from "next/navigation"; // Gunakan useRouter untuk navigasi
+import { useRouter } from "next/router"; // Gunakan useRouter untuk navigasi
 
 // Dynamic import untuk komponen User agar di-load hanya di client-side
-const User = dynamic(() => import("@/components/User/face/list"), { ssr: false });
+const User = dynamic(() => import("./list"), { ssr: false });
 
 const accounts = [
     {
