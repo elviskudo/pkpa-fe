@@ -1,6 +1,7 @@
 'use client'
 import React, { useRef, useState } from 'react';
 import { useFormik } from 'formik';
+import axios from 'axios';
 import * as Yup from 'yup';
 import Editor from './Editor.js'; 
 import 'quill/dist/quill.snow.css';
@@ -43,19 +44,47 @@ const FormTambahUniversity = ({ onClose }) => {
       brosur: null,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       Swal.fire({
         title: 'Apakah Anda ingin menyimpan data?',
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Iya',
         cancelButtonText: 'Batal',
-      }).then((result) => {
+      }).then( async (result) => {
         if (result.isConfirmed) {
-          console.log('Form values:', values);
-          Swal.fire('Berhasil!', 'Data berhasil disimpan', 'success').then(() => {
-            onClose(); 
-          });
+          const formData = new FormData();
+          formData.append('namaUniversitas', values.namaUniversitas);
+          formData.append('kodeUniversitas', values.kodeUniversitas);
+          formData.append('deskripsi', values.deskripsi);
+          formData.append('persyaratanCalon', values.persyaratanCalon);
+          formData.append('polaIlmiah', values.polaIlmiah);
+          if (values.logo) formData.append('logo', values.logo);
+          if (values.brosur) formData.append('brosur', values.brosur);
+
+          try {
+            const response = await axios.post(
+              'http://localhost:8000/api/admin/universities/create', 
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              }
+            );
+            console.log('Response:', response.data);
+            Swal.fire('Berhasil!', 'Data berhasil disimpan', 'success').then(() => {
+              onClose();
+            });
+          } catch (error) {
+            if (error.response) {
+              console.error('Server Response:', error.response.data);
+              Swal.fire('Gagal!', error.response.data.message || 'Terjadi kesalahan pada server', 'error');
+            } else {
+              console.error('Error:', error);
+              Swal.fire('Gagal!', 'Terjadi kesalahan koneksi', 'error');
+            }
+          }
         }
       });
     },
