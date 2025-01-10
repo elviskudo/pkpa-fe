@@ -1,11 +1,11 @@
-// src/components/Admin/AddCourse.js
+// src/components/Admin/EditCourse.js
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Tabs, Tab, Switch } from "@mui/material";
 import dynamic from "next/dynamic";
 import CustomDropzone from './CustomDropzone';
 import Swal from 'sweetalert2';
-import ContentSection from "./ContentSection";
+import ContentSection from "./ContentSection"; // Gunakan ContentSection daripada EditContentSection
 import { PencilIcon, TrashIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import ImageIcon from '@mui/icons-material/Image';
@@ -18,8 +18,9 @@ import LinkIcon from '@mui/icons-material/Link';
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
 
-const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
-    const [topicTitle, setTopicTitle] = useState("");
+const EditCourse = ({ onBack, onSave, dataCourse }) => {
+    const existingCourse = dataCourse[0] || {};
+
     const [courseTitle, setCourseTitle] = useState("");
     const [classType, setClassType] = useState("100");
     const [instructor, setInstructor] = useState("");
@@ -31,18 +32,28 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
     const [topics, setTopics] = useState([]);
     const [orderTopic, setOrderTopic] = useState("");
     const [isAddingTopic, setIsAddingTopic] = useState(false);
-    const [contentSections, setContentSections] = useState([{}]); // Default one empty section
+    const [contentSections, setContentSections] = useState([{}]); 
     const [topicErrors, setTopicErrors] = useState({});
-    const [editingTopicId, setEditingTopicId] = useState(null); // Track the topic being edited
-    const [orderCourse, setOrderCourse] = useState(() => {
-        // Default to the next sequential number
-        const lastOrder = dataCourse.length ? Math.max(...dataCourse.map(course => course.order || 0)) : 0;
-        return lastOrder + 1;
-    });
-    const course = dataCourse[0];
-    const getContentIcon = (type) => {
-        const iconStyle = { fontSize: '60px' }; // Set icon size to 60px
+    const [editingTopicId, setEditingTopicId] = useState(null);
+    const [topicTitle, setTopicTitle] = useState("");
+    const [orderCourse, setOrderCourse] = useState(1);
 
+    useEffect(() => {
+        if (existingCourse) {
+            setCourseTitle(existingCourse.name || "");
+            setDescription(existingCourse.description || "");
+            setDiscussionEnabled(existingCourse.is_forum === 1 ? true : false);
+            setBackgroundImage(existingCourse.background_image || "");
+            setCertificateImage(existingCourse.certificate || "");
+            setClassType(existingCourse.class_type?.toString() || "100");
+            setInstructor(existingCourse.teacher_id ? existingCourse.teacher_id.toString() : "");
+            setTopics(existingCourse.topics || []);
+            setOrderCourse(existingCourse.order || 1);
+        }
+    }, [existingCourse]);
+
+    const getContentIcon = (type) => {
+        const iconStyle = { fontSize: '60px' };
         switch (type) {
             case "Video":
                 return <VideocamIcon style={iconStyle} />;
@@ -61,35 +72,13 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
         }
     };
 
-    const handleOrderChange = (newOrder, contentData) => {
-        setContentSections((prevSections) => {
-            const currentOrder = contentData.order;
-
-            // Map through sections and adjust their orders accordingly
-            const updatedSections = prevSections.map((section) => {
-                if (section === contentData) {
-                    // Update the order of the selected section
-                    return { ...section, order: newOrder };
-                } else if (section.order >= newOrder && section.order < currentOrder) {
-                    // Move sections down if they are between newOrder and currentOrder
-                    return { ...section, order: section.order + 1 };
-                } else if (section.order <= newOrder && section.order > currentOrder) {
-                    // Move sections up if they are between currentOrder and newOrder
-                    return { ...section, order: section.order - 1 };
-                }
-                return section;
-            });
-
-            // Sort sections by their new order values
-            return updatedSections.sort((a, b) => a.order - b.order);
-        });
+    const handleTabChange = (event, newValue) => {
+        setActiveTab(newValue);
     };
+
     const handleOrderChangeForTopics = (newOrder, topicId) => {
-        console.log("handleOrderChangeForTopics - newOrder:", newOrder, "topicId:", topicId); // Debugging log
         setTopics(prevTopics => {
             const currentTopic = prevTopics.find(topic => topic.id === topicId);
-            console.log("Current Topic:", currentTopic); // Debugging log
-
             const updatedTopics = prevTopics.map(topic => {
                 if (topic.id === topicId) {
                     return { ...topic, order: newOrder };
@@ -101,15 +90,13 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
                 return topic;
             });
 
-            // Reassign orders sequentially to avoid gaps or duplicates
             const reassignedTopics = updatedTopics
                 .sort((a, b) => a.order - b.order)
                 .map((topic, index) => ({ ...topic, order: index + 1 }));
-
-            console.log("Updated Topics:", reassignedTopics); // Debugging log
             return reassignedTopics;
         });
     };
+
     const toggleCollapse = (topicId) => {
         setTopics(prevTopics =>
             prevTopics.map(topic =>
@@ -117,25 +104,22 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
             )
         );
     };
+
     const handleCancelContentSection = (index) => {
         setContentSections(prevSections => {
             const updatedSections = prevSections.filter((_, i) => i !== index)
-                .map((section, i) => ({ ...section, order: i + 1 })); // Update order sequentially
+                .map((section, i) => ({ ...section, order: i + 1 })); 
             return updatedSections;
         });
     };
 
-    const handleTabChange = (event, newValue) => {
-        setActiveTab(newValue);
-    };
-
     const handleAddContentSection = () => {
         const newSection = { order: contentSections.length + 1, title: "", type: "Video", description: "" };
-        setContentSections([...contentSections, newSection]); // Add a new empty content section
+        setContentSections([...contentSections, newSection]);
     };
 
     const handleEditContentSection = (topic) => {
-        setContentSections(topic.batches || []); // Directly load contents from batches into contentSections
+        setContentSections(topic.batches || []);
         setEditingTopicId(topic.id);
         setTopicTitle(topic.name);
         setOrderTopic(topic.order);
@@ -144,30 +128,9 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
     const handleSaveContentSection = (contentData, index) => {
         setContentSections(prevSections => {
             const updatedSections = [...prevSections];
-            updatedSections[index] = contentData; // Update specific section
+            updatedSections[index] = contentData;
             return updatedSections;
         });
-    };
-
-    const handleSave = () => {
-        const newCourse = {
-            id: Date.now(),
-            name: courseTitle,
-            description,
-            is_publish: 0,
-            is_forum: discussionEnabled ? 1 : 0,
-            background_image: backgroundImage,
-            certificate: certificateImage,
-            class_type: classType,
-            category: dataCourse.find(course => course.category.id === Number(classType))?.category || {},
-            teacher_id: Number(instructor),
-            teacher: dataCourse.find(course => course.teacher.id === Number(instructor))?.teacher || {},
-            university: { name: "Example University" }, // Replace as needed
-            topics: topics,
-            order: orderCourse,
-        };
-        console.log("Saving new course:", newCourse); // Debugging log
-        onSave(newCourse); // Trigger save to be passed to BankContent
     };
 
     const handleDeleteBackgroundImage = () => {
@@ -183,18 +146,17 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
     const handleAddTopicClick = () => {
         const nextOrder = topics.length
             ? Math.max(...topics.map(topic => topic.order)) + 1
-            : 1; // Determine the next order dynamically
+            : 1;
         setOrderTopic(nextOrder);
         setIsAddingTopic(true);
-        setContentSections([{}]); // Ensure there's one content section by default
-        setEditingTopicId(null); // Ensure we're not in edit mode
-        setTopicTitle(""); // Reset title for new topic
+        setContentSections([{}]);
+        setEditingTopicId(null);
+        setTopicTitle("");
     };
 
     const handleSaveTopic = () => {
-        console.log("Saving Topic - orderTopic:", orderTopic, "editingTopicId:", editingTopicId); // Debugging log
         const newTopic = {
-            id: editingTopicId ?? Date.now(), // Ensure unique ID for each topic
+            id: editingTopicId ?? Date.now(),
             name: topicTitle,
             order: orderTopic,
             batches: contentSections,
@@ -202,70 +164,72 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
     
         setTopics(prevTopics => {
             let updatedTopics;
-    
             if (editingTopicId) {
-                // Editing an existing topic
                 updatedTopics = prevTopics.map(topic => {
                     if (topic.id === editingTopicId) {
-                        return newTopic; // Update the existing topic
+                        return newTopic;
                     }
-                    // Adjust other topics' order to avoid conflicts
                     if (topic.order === newTopic.order && topic.id !== editingTopicId) {
                         return { ...topic, order: topic.order + 1 };
                     }
                     return topic;
                 });
             } else {
-                // Adding a new topic
                 updatedTopics = [...prevTopics, newTopic];
             }
-    
-            // Ensure sequential and unique orders after adding/editing
+
             const reassignedTopics = updatedTopics
                 .sort((a, b) => a.order - b.order)
                 .map((topic, index) => ({ ...topic, order: index + 1 }));
-            
-            console.log("Updated Topics after Save:", reassignedTopics); // Debugging log
             return reassignedTopics;
         });
     
-        // Reset states for adding new topic
-        setOrderTopic(topics.length + 1); // Set next available order for the next addition
+        setOrderTopic(topics.length + 1);
         setTopicTitle("");
         setEditingTopicId(null);
         setIsAddingTopic(false);
     
         Swal.fire("Success", "Topik berhasil disimpan!", "success");
     };
-    
+
     const handleOrderTopicChange = (e) => {
         const newOrder = Math.max(1, Number(e.target.value));
-        console.log("Order Topic Changed - newOrder:", newOrder); // Debugging log
         setOrderTopic(newOrder);
         if (editingTopicId) {
             handleOrderChangeForTopics(newOrder, editingTopicId);
         }
     };
+
     const handleDeleteTopic = (topicId) => {
         setTopics(topics.filter(topic => topic.id !== topicId));
     };
 
+    const handleSave = () => {
+        const updatedCourse = {
+            ...existingCourse,
+            name: courseTitle,
+            description,
+            is_forum: discussionEnabled ? 1 : 0,
+            background_image: backgroundImage,
+            certificate: certificateImage,
+            class_type: Number(classType),
+            teacher_id: Number(instructor),
+            topics: topics,
+            order: orderCourse,
+        };
+        onSave(updatedCourse);
+    };
+
     return (
         <div>
-            <h2 className="text-xl font-semibold mb-4">Tambah Mata Kuliah</h2>
+            <h2 className="text-xl font-semibold mb-4">Edit Mata Kuliah</h2>
             <Tabs
                 value={activeTab}
                 onChange={handleTabChange}
                 sx={{
-                    "& .MuiTab-root": {
-                        color: "#f97316",
-                    },
-                    "& .MuiTab-root.Mui-selected": {
-                        color: "#f97316",
-                    },
-                    "& .MuiTabs-indicator": {
-                        backgroundColor: "#f97316",
-                    },
+                    "& .MuiTab-root": { color: "#f97316" },
+                    "& .MuiTab-root.Mui-selected": { color: "#f97316" },
+                    "& .MuiTabs-indicator": { backgroundColor: "#f97316" },
                 }}>
                 <Tab label="1. Informasi Umum" />
                 <Tab label="2. Manajemen Konten" />
@@ -298,11 +262,11 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
                         <label className="block mt-4">Tipe Kelas</label>
                         <select
                             value={classType}
-                            onChange={(e) => setClassType(Number(e.target.value))} // Pastikan nilai numerik
+                            onChange={(e) => setClassType(e.target.value)}
                             className="border rounded-md px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-gray-300">
-                            <option value={100}>Publik</option>
-                            <option value={200}>Privat</option>
-                            <option value={300}>Hybrid</option>
+                            <option value="100">Publik</option>
+                            <option value="200">Privat</option>
+                            <option value="300">Hybrid</option>
                         </select>
 
                         <label className="block mt-4">Nama Tutor</label>
@@ -360,7 +324,6 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
                     <div className="bg-white p-6 rounded-md shadow-md mb-6">
                         <label className="block font-bold">Info Sertifikat</label>
                         <div className="mt-4 flex space-x-8 items-start">
-                            {/* Left section with description and download link */}
                             <div className="w-1/3">
                                 <h3 className="text-md font-bold">Sertifikat</h3>
                                 <p className="text-gray-500 text-sm mt-1">Ada 2 bentuk sertifikat yang akan diterima oleh peserta</p>
@@ -368,8 +331,6 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
                                     Download Guideline
                                 </a>
                             </div>
-
-                            {/* Right section with the certificate upload area */}
                             <div className="flex space-x-4">
                                 <CustomDropzone
                                     file={certificateImage}
@@ -398,6 +359,7 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
                     </div>
                 </div>
             )}
+
             {activeTab === 1 && (
                 <div className="mt-4">
                     <h3 className="text-lg font-medium">Manajemen Konten</h3>
@@ -434,7 +396,6 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
                                     </div>
                                 </div>
 
-                                {/* Content Table - Collapsed by Default */}
                                 {!topic.collapsed && (
                                     <table className="min-w-full mt-4">
                                         <thead>
@@ -459,7 +420,6 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
                                     </table>
                                 )}
 
-                                {/* Conditional Edit Form Below Each Topic */}
                                 {editingTopicId === topic.id && (
                                     <div className="p-4 rounded-md mt-4">
                                         <h4 className="text-md font-semibold">Edit Topik</h4>
@@ -494,14 +454,18 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
                                             </button>
                                         </div>
 
-                                        {/* Render Content Sections for the Edit Form */}
                                         {contentSections.map((section, index) => (
                                             <ContentSection
                                                 key={index}
                                                 handleCancel={() => handleCancelContentSection(index)}
                                                 onSaveContent={(data) => handleSaveContentSection(data, index)}
                                                 contentData={section}
-                                                onOrderChange={handleOrderChange}
+                                                onOrderChange={(newOrder, contentData) => {
+                                                    const updatedSections = [...contentSections];
+                                                    const currentIndex = updatedSections.findIndex(sec => sec === contentData);
+                                                    updatedSections[currentIndex].order = newOrder;
+                                                    setContentSections(updatedSections);
+                                                }}
                                             />
                                         ))}
                                         <div className="flex justify-end mt-6">
@@ -517,7 +481,6 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
                         ))}
                     </div>
 
-                    {/* Add Topic Form */}
                     {isAddingTopic && !editingTopicId && (
                         <div className="bg-white p-6 rounded-md shadow-md mb-6">
                             <h4 className="text-md font-semibold">Tambah Topik</h4>
@@ -553,14 +516,18 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
                                 </button>
                             </div>
 
-                            {/* Render Content Sections for the Add Form */}
                             {contentSections.map((section, index) => (
                                 <ContentSection
                                     key={index}
                                     handleCancel={() => handleCancelContentSection(index)}
                                     onSaveContent={(data) => handleSaveContentSection(data, index)}
                                     contentData={section}
-                                    onOrderChange={handleOrderChange}
+                                    onOrderChange={(newOrder, contentData) => {
+                                        const updatedSections = [...contentSections];
+                                        const currentIndex = updatedSections.findIndex(sec => sec === contentData);
+                                        updatedSections[currentIndex].order = newOrder;
+                                        setContentSections(updatedSections);
+                                    }}
                                 />
                             ))}
                             <div className="flex justify-end mt-6">
@@ -597,10 +564,10 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
                         </button>
                         <button
                             onClick={handleSave}
-                            disabled={topics.length === 0} // Disable if no topics
+                            disabled={topics.length === 0}
                             className={`px-4 py-2 rounded-md ${topics.length === 0 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-orange-500 text-white'}`}
                         >
-                            Simpan & Lanjutkan
+                            Simpan Perubahan
                         </button>
                     </>
                 )}
@@ -609,4 +576,4 @@ const AddCourse = ({ onBack, onAddTopicClick, onSave, dataCourse }) => {
     );
 };
 
-export default AddCourse;
+export default EditCourse;

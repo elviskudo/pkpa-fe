@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -15,12 +15,30 @@ const ContentDropzone = ({
         // Update state if initialFile changes (e.g., during editing)
         setFile(initialFile);
     }, [initialFile]);
-    const onDrop = (acceptedFiles) => {
+
+    const onDrop = async (acceptedFiles) => {
         const uploadedFile = acceptedFiles[0];
         if (uploadedFile) {
-            const previewURL = URL.createObjectURL(uploadedFile);
-            setFile(previewURL);
-            if (onDropFile) onDropFile(uploadedFile);
+            // Siapkan data untuk dikirim ke Laravel
+            const formData = new FormData();
+            formData.append('file', uploadedFile);
+
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/upload`, {
+                    method: 'POST',
+                    body: formData,
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    setFile(data.url); // Gunakan URL yang dikembalikan dari Cloudinary
+                    if (onDropFile) onDropFile(data.url);
+                } else {
+                    console.error('Failed to upload file');
+                }
+            } catch (error) {
+                console.error('Error uploading to Cloudinary:', error);
+            }
         }
     };
 
@@ -32,9 +50,18 @@ const ContentDropzone = ({
 
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
-        accept: 'image/*, video/*, application/pdf', // Accept images, videos, and PDFs
+        accept: {
+            'image/jpeg': [],
+            'image/png': [],
+            'image/jpg': [],
+            'image/gif': [],
+            'application/pdf': [],
+            'video/mp4': [],
+            'video/avi': [],
+            'video/mov': [],
+        },
         multiple: false,
-    });
+    });    
 
     const isFileUrl = typeof file === 'string';
     const isPdfFile = isFileUrl && file.endsWith('.pdf');
@@ -54,7 +81,7 @@ const ContentDropzone = ({
                             <p className="text-sm text-gray-700">{isPdfFile ? 'PDF File' : 'Video File'}</p>
                         </div>
                     ) : (
-                        <img src={isFileUrl ? file : URL.createObjectURL(file)} alt="Preview" className="absolute inset-0 w-full h-full object-cover rounded" />
+                        <img src={isFileUrl ? file : URL.createObjectURL(file)} alt="Preview" className="absolute inset-0 w-full h-full object-contain rounded" />
                     )}
                     <button
                         onClick={handleDelete}

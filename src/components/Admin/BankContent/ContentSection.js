@@ -22,11 +22,22 @@ const ContentSection = ({ handleCancel, onSaveContent,onOrderChange, contentData
             setContentType(contentData.type || "Video");
             setContentDescription(contentData.description || "");
             setOrder(contentData.order || 1);
-            setThumbnail(contentData.thumbnail || "");
-            setVideoUrl(contentData.video_url || "");
-            setPdfFileUrl(contentData.file_url || "");
+    
+            const uploadedFiles = contentData.uploaded_files || [];
+            if (uploadedFiles.length > 0) {
+                uploadedFiles.forEach((file) => {
+                    if (file.file_type === 'image') {
+                        setThumbnail(file.file_url);
+                    } else if (file.file_type === 'video') {
+                        setVideoUrl(file.file_url);
+                    } else if (file.file_type === 'pdf') {
+                        setPdfFileUrl(file.file_url);
+                    }
+                });
+            }
         }
     }, [contentData]);
+    
     const handleOrderChange = (e) => {
         const newOrder = Number(e.target.value);
         if (newOrder !== order) { // Only trigger if the new order is different
@@ -37,40 +48,102 @@ const ContentSection = ({ handleCancel, onSaveContent,onOrderChange, contentData
     
     const handleSaveContentSection = () => {
         let contentData;
-
+        let uploadedFiles = [];
+    
         switch (contentType) {
             case "Video":
+                uploadedFiles = [
+                    {
+                        id: Date.now(), // Generate a unique ID
+                        uuid: 'video-uuid-' + Date.now(), // Example unique identifier
+                        name: 'video_thumbnail',
+                        model: 'App\\Models\\Batch',
+                        relation_id: 'relation-id-video-thumbnail', // Example relation ID
+                        url_name: 'thumbnail_url',
+                        file_type: 'image',
+                        file_url: thumbnail,
+                        uploaded_at: new Date().toISOString(),
+                    },
+                    {
+                        id: Date.now() + 1,
+                        uuid: 'video-uuid-' + (Date.now() + 1),
+                        name: 'video_file',
+                        model: 'App\\Models\\Batch',
+                        relation_id: 'relation-id-video-file',
+                        url_name: 'video_url',
+                        file_type: 'video',
+                        file_url: videoUrl,
+                        uploaded_at: new Date().toISOString(),
+                    }
+                ];
                 contentData = {
                     title: contentTitle,
                     type: contentType,
                     description: contentDescription,
                     order,
-                    thumbnail,
-                    video_url: videoUrl,
+                    uploaded_files: uploadedFiles,
                 };
                 break;
-
+    
             case "PDF":
+                uploadedFiles = [
+                    {
+                        id: Date.now(),
+                        uuid: 'pdf-uuid-' + Date.now(),
+                        name: 'pdf_file',
+                        model: 'App\\Models\\Batch',
+                        relation_id: 'relation-id-pdf-file',
+                        url_name: 'pdf_url',
+                        file_type: 'pdf',
+                        file_url: pdfFileUrl,
+                        uploaded_at: new Date().toISOString(),
+                    }
+                ];
                 contentData = {
                     title: contentTitle,
                     type: contentType,
                     description: contentDescription,
                     order,
-                    file_url: pdfFileUrl,
+                    uploaded_files: uploadedFiles,
                 };
                 break;
-
+    
+            case "Image":
+                uploadedFiles = [
+                    {
+                        id: Date.now(),
+                        uuid: 'image-uuid-' + Date.now(),
+                        name: 'image_file',
+                        model: 'App\\Models\\Batch',
+                        relation_id: 'relation-id-image-file',
+                        url_name: 'image_url',
+                        file_type: 'image',
+                        file_url: thumbnail,
+                        uploaded_at: new Date().toISOString(),
+                    }
+                ];
+                contentData = {
+                    title: contentTitle,
+                    type: contentType,
+                    description: contentDescription,
+                    order,
+                    uploaded_files: uploadedFiles,
+                };
+                break;
+    
             default:
                 contentData = {
                     title: contentTitle,
                     type: contentType,
                     description: contentDescription,
                     order,
+                    uploaded_files: [],
                 };
                 break;
         }
         onSaveContent(contentData);
     };
+    
     return (
         <div className="bg-white p-6 rounded-md shadow-md border border-gray-300 mb-6">
             <h3 className="text-lg font-medium mb-4">Konten</h3>
@@ -129,7 +202,7 @@ const ContentSection = ({ handleCancel, onSaveContent,onOrderChange, contentData
                             <small className="block text-gray-500">Gambar akan ditampilkan sebagai thumbnail video. Maksimum 10 MB. Format gambar jpg/png.</small>
                         </div>
                         <div className="w-1/2 ml-4">
-                            <ContentDropzone label="Tarik file ke sini atau klik untuk upload" maxFileSize={10} onDropFile={setThumbnail} file={thumbnail} />
+                            <ContentDropzone label="Tarik file ke sini atau klik untuk upload" maxFileSize={10} onDropFile={(url) => setThumbnail(url)} file={thumbnail} />
                         </div>
                     </div>
 
@@ -152,7 +225,7 @@ const ContentSection = ({ handleCancel, onSaveContent,onOrderChange, contentData
                             <small className="block text-gray-500">Maksimum ukuran file 100 MB, Format video AVI, MP4</small>
                         </div>
                         <div className="w-1/2">
-                            <ContentDropzone label="Tarik file ke sini atau klik untuk upload" maxFileSize={100} onDropFile={setVideoUrl} file={videoUrl} />
+                            <ContentDropzone label="Tarik file ke sini atau klik untuk upload" maxFileSize={100} onDropFile={(url) => setVideoUrl(url)} file={videoUrl} />
                         </div>
                         <div className="w-1/4 ml-4 mt-10">
                             <button className="px-4 py-2 bg-blue-500 text-white rounded-md">Preview</button>
@@ -182,7 +255,7 @@ const ContentSection = ({ handleCancel, onSaveContent,onOrderChange, contentData
                             <small className="block text-gray-500">Maksimum ukuran file 10 MB. Format PDF.</small>
                         </div>
                         <div className="w-1/2">
-                            <ContentDropzone label="Tarik file ke sini atau klik untuk upload" maxFileSize={10} onDropFile={setPdfFileUrl} file={pdfFileUrl} />
+                            <ContentDropzone label="Tarik file ke sini atau klik untuk upload" maxFileSize={10} onDropFile={(url) => setPdfFileUrl(url)} file={pdfFileUrl} />
                         </div>
                     </div>
                 </div>

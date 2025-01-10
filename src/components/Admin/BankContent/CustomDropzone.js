@@ -13,7 +13,7 @@ const CustomDropzone = ({ file, setFile, label, onDelete }) => {
             formData.append('file', file);
 
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/upload`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/upload`, {
                     method: 'POST',
                     body: formData,
                 });
@@ -32,10 +32,10 @@ const CustomDropzone = ({ file, setFile, label, onDelete }) => {
 
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
-        accept: 'image/*',
+        accept: 'image/jpeg, image/png, image/gif , image/jpg',
         multiple: false,
     });
-
+    
     return (
         <div
             {...getRootProps({

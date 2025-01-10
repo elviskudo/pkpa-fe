@@ -5,7 +5,7 @@ import { Dropdown } from 'flowbite-react';
 import Switch from '@mui/material/Switch';
 import Swal from 'sweetalert2';
 
-const BankContent = ({ contents, onAddCourseClick }) => {
+const BankContent = ({ contents, onAddCourseClick, onEditCourseClick }) => {
     const [searchText, setSearchText] = useState('');
     const [university, setUniversity] = useState('');
     const [filterBy, setFilterBy] = useState('');
@@ -117,7 +117,17 @@ const BankContent = ({ contents, onAddCourseClick }) => {
                                 </svg>
                             </div>
                         }>
-                            <Dropdown.Item className="text-blue-500">Edit</Dropdown.Item>
+                            <Dropdown.Item
+                                className="text-blue-500"
+                                onClick={() => {
+                                    const selectedCourse = info.row.original;
+                                    if (typeof onEditCourseClick === 'function') {
+                                        onEditCourseClick(selectedCourse);
+                                    }
+                                }}
+                            >
+                                Edit
+                            </Dropdown.Item>
                             <Dropdown.Item className="text-red-500" onClick={() => handleArchive(info.row.original.id)}>
                                 Arsip
                             </Dropdown.Item>
@@ -125,7 +135,7 @@ const BankContent = ({ contents, onAddCourseClick }) => {
                     </div>
                 ),
                 className: 'text-center',
-            }),
+            }),            
         ],
         []
     );
