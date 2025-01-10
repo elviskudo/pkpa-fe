@@ -6,13 +6,13 @@ export default function Sidebar() {
   const [activeItem, setActiveItem] = useState("Mata Kuliah");
 
   const menuItems = [
-    { name: "Mata Kuliah" },
-    { name: "Sesi Online" },
-    { name: "Ujian Akhir" },
-    { name: "Sertifikat" },
-    { name: "Performa Belajar" },
-    { name: "Notifikasi", notifications: 2 },
-    { name: "Pengaturan" },
+    { name: "Mata Kuliah", notifications: 0, url: "/user/course" },
+    { name: "Sesi Online", notifications: 0, url: "/user/online" },
+    { name: "Ujian Akhir", notifications: 0, url: "/" },
+    { name: "Sertifikat", notifications: 0, url: "/" },
+    { name: "Performa Belajar", notifications: 0, url: "/" },
+    { name: "Notifikasi", notifications: 2, url: "/" },
+    { name: "Pengaturan", notifications: 0, url: "/" },
   ];
   return (
     <div className="w-64 h-min bg-white shadow-sm rounded-md">
@@ -39,15 +39,14 @@ export default function Sidebar() {
             <li key={index}>
               <Link
                 href=""
-                className={`flex justify-between items-center px-4 py-3 text-md border border-gray-100 ${
-                  activeItem === item.name
-                    ? "bg-orange-50 text-[#fe9800]"
-                    : "text-gray-700 hover:bg-gray-100"
-                }`}
+                className={`flex justify-between items-center px-4 py-3 text-md border border-gray-100 ${activeItem === item.name
+                  ? "bg-orange-50 text-[#fe9800]"
+                  : "text-gray-700 hover:bg-gray-100"
+                  }`}
                 onClick={() => setActiveItem(item.name)}
               >
                 <span>{item.name}</span>
-                {item.notifications && (
+                {item.notifications > 0 && (
                   <span className="bg-[#fe9800] text-white text-xs font-bold px-2 py-1 rounded-full">
                     {item.notifications}
                   </span>

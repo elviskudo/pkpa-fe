@@ -38,7 +38,7 @@ function InformasiUmum() {
   
 
   return (
-    <div className="mx-4 md:mx-20 lg:mx-40 xl:mx-60 my-10 py-10 px-5 md:px-10 lg:px-20 bg-white shadow-md rouded-lg">
+    <div className="mx-4 md:mx-20 lg:mx-40 xl:mx-60 my-10 py-10 px-5 md:px-10 lg:px-20 bg-white shadow-md rouded-lg text-gray-500">
       {/* Breadcrumb */}
 
       <div className="text-sm font-medium text-gray-500 mb-5">

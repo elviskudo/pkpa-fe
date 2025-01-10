@@ -38,13 +38,7 @@ export default function Topbar() {
               clipRule="evenodd"
             />
           </svg>
-          <div className="w-8 h-8 rounded-full bg-gray-800 overflow-hidden">
-            <img
-              src="/images/person.png"
-              alt="User Avatar"
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <div className="w-8 h-8 rounded-full bg-gray-800"></div>
           <div>
             <h2 className="font-semibold text-black">Jason B.</h2>
           </div>

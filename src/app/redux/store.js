@@ -1,18 +1,11 @@
+"use client";
 import { configureStore } from "@reduxjs/toolkit";
-import forumReducer from "@/app/redux/features/forumSlice";
-import { loadState, saveState } from "@/data/LocalStorage";
+import { forumReducer } from "./features/forumSlice";
 
-const preloadedState = loadState();
-
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     forum: forumReducer,
   },
-  preloadedState,
-});
-
-store.subscribe(() => {
-  saveState(store.getState());
 });
 
 export default store;
