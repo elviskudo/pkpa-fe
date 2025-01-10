@@ -6,7 +6,7 @@ const NavbarLanding = () => {
   return (
     <nav className="sticky top-0 flex justify-between items-center px-8 py-4 bg-white z-50 shadow-md">
       <div className="flex items-center space-x-4">
-        <Link href="#carousel" className="flex items-center">
+        <Link href="/" className="flex items-center">
           <Image
             src="/images/logo.png"
             alt="PKPA Logo"
@@ -15,7 +15,7 @@ const NavbarLanding = () => {
           />
         </Link>
         <span>|</span>
-        <Link href="#carousel" className="flex items-center">
+        <Link href="/" className="flex items-center">
           <Image
             src="/images/logo-atmasasmita.png"
             alt="ADR Law Firm Logo"
@@ -26,27 +26,27 @@ const NavbarLanding = () => {
       </div>
       <ul className="scroll-mt-24 flex space-x-6">
         <li>
-          <Link href="#university" className="text-gray-600 hover:text-gray-900">
+          <Link href="/home/university" className="text-gray-600 hover:text-gray-900">
             Universitas
           </Link>
         </li>
         <li>
-          <Link href="#about" className="text-gray-600 hover:text-gray-900">
+          <Link href="/home/about" className="text-gray-600 hover:text-gray-900">
             Tentang Kami
           </Link>
         </li>
         <li>
-          <Link href="#keunggulan" className="text-gray-600 hover:text-gray-900">
+          <Link href="/home/keunggulan" className="text-gray-600 hover:text-gray-900">
             Keunggulan
           </Link>
         </li>
         <li>
-          <Link href="#alur-daftar" className="text-gray-600 hover:text-gray-900">
+          <Link href="/home/alur-daftar" className="text-gray-600 hover:text-gray-900">
             Alur Daftar
           </Link>
         </li>
         <li>
-          <Link href="#kurikulum" className="text-gray-600 hover:text-gray-900">
+          <Link href="/home/kurikulum" className="text-gray-600 hover:text-gray-900">
             Kurikulum
           </Link>
         </li>
