@@ -1,5 +1,5 @@
 import Accordion from "@/components/User/accordion";
-import Sidebar from "@/components/User/sidebar";
+import Sidebar from "@/components/User/Sidebar";
 
 export default function Page() {
   const dataCourseByCategories = [
@@ -201,6 +201,6 @@ export default function Page() {
           ))}
         </div>
       </div>
-    </div> 
+    </div>
   );
 }

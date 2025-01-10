@@ -8,11 +8,11 @@ export default function Sidebar() {
   const menuItems = [
     { name: "Mata Kuliah", notifications: 0, url: "/user/course" },
     { name: "Sesi Online", notifications: 0, url: "/user/online" },
-    { name: "Ujian Akhir", notifications: 0, url: "/" },
-    { name: "Sertifikat", notifications: 0, url: "/" },
-    { name: "Performa Belajar", notifications: 0, url: "/" },
-    { name: "Notifikasi", notifications: 2, url: "/" },
-    { name: "Pengaturan", notifications: 0, url: "/" },
+    { name: "Ujian Akhir", notifications: 0, url: "/user/exam" },
+    { name: "Sertifikat", notifications: 0, url: "/user/certificate" },
+    { name: "Performa Belajar", notifications: 0, url: "/user/performance" },
+    { name: "Notifikasi", notifications: 2, url: "/user/notification" },
+    { name: "Pengaturan", notifications: 0, url: "/user/setting" },
   ];
   return (
     <div className="w-64 h-min bg-white shadow-sm rounded-md">
